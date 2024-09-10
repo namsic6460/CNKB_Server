@@ -1,0 +1,30 @@
+server:
+  port: 8080
+spring:
+  jpa:
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    generate-ddl: true
+    open-in-view: false
+  config:
+    import: vault://
+  cloud:
+    vault:
+      enabled: true
+      fail-fast: true
+      kv:
+        enabled: true
+        backend: kv
+        application-name: cnkb
+      uri: https://vault.namsic.be
+      token: ${VAULT_TOKEN}
+  datasource:
+    url:
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: debug
