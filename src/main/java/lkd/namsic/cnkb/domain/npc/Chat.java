@@ -36,7 +36,7 @@ public class Chat extends AbstractEntity {
     private Long delay = 1000L;
 
     @Column
-    private Boolean isForceWait;
+    private Boolean isForce;
 
     @JoinColumn(name = "npc_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,7 +49,7 @@ public class Chat extends AbstractEntity {
 
     @Column
     @Convert(converter = ReplyTypeLongMapConverter.class)
-    private final Map<ReplyType, Long> availableReplieMap = new HashMap<>();
+    private final Map<ReplyType, Long> availableRepliyMap = new HashMap<>();
 
     public void setNpc(Npc npc) {
         this.npc = npc;

@@ -36,11 +36,12 @@ public class StartUpListener implements ApplicationListener<ApplicationReadyEven
                 .namedChat(NamedChat.TUTORIAL)
                 .text("튜토리얼 시작 메세지")
                 .npc(tutorialNpc)
+                .isForce(true)
                 .build();
 
             chat = this.createNextChat(
                 chat,
-                builder -> builder.text("튜토리얼 두번쨰 메세지. 응답을 입력해주세요")
+                builder -> builder.text("튜토리얼 두번쨰 메세지. 응답을 입력해주세요").isForce(true)
             );
             this.chatRepository.save(chat);
 
@@ -84,7 +85,7 @@ public class StartUpListener implements ApplicationListener<ApplicationReadyEven
     ) {
         Chat newChat = buildFunc.apply(Chat.builder()).build();
         this.chatRepository.save(newChat);
-        chat.getAvailableReplieMap().put(replyType, newChat.getId());
+        chat.getAvailableRepliyMap().put(replyType, newChat.getId());
 
         return newChat;
     }

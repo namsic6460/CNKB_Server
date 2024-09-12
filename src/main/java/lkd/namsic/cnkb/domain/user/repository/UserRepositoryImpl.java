@@ -29,11 +29,26 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public void updateChat(User targetUser, Chat chat, boolean isForceChat) {
+    public void updateChat(User targetUser, Chat chat) {
         this.queryFactory.update(user)
             .where(user.eq(targetUser))
-            .set(user.actionType, isForceChat ? ActionType.FORCE_CHAT : ActionType.CHAT)
             .set(user.chat, chat)
+            .execute();
+    }
+
+    @Override
+    public ActionType getActionType(User targetUser) {
+        return this.queryFactory.select(user.actionType)
+            .from(user)
+            .where(user.eq(targetUser))
+            .fetchFirst();
+    }
+
+    @Override
+    public void clearChat(User targetUser) {
+        this.queryFactory.update(user)
+            .where(user.eq(targetUser))
+            .setNull(user.chat)
             .execute();
     }
 }

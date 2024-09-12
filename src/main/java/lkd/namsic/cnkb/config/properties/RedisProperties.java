@@ -9,6 +9,7 @@ public record RedisProperties(
     String password,
     Integer port,
     Integer database,
-    Boolean ssl
+    Boolean ssl,
+    String prefix
 ) {
 }

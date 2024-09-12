@@ -33,6 +33,7 @@ public class User extends AbstractEntity {
 
     @Column(length = 15)
     @Enumerated(EnumType.STRING)
+    @Getter(AccessLevel.PRIVATE)
     private ActionType actionType;
 
     @Setter

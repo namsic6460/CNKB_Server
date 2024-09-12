@@ -1,24 +1,20 @@
 package lkd.namsic.cnkb.service;
 
 import jakarta.annotation.PostConstruct;
+import lkd.namsic.cnkb.component.ActionHelper;
 import lkd.namsic.cnkb.constant.Constants;
 import lkd.namsic.cnkb.domain.npc.Chat;
-import lkd.namsic.cnkb.domain.npc.Npc;
 import lkd.namsic.cnkb.domain.npc.repository.ChatRepository;
-import lkd.namsic.cnkb.domain.npc.repository.NpcRepository;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
 import lkd.namsic.cnkb.dto.KakaoMessage;
 import lkd.namsic.cnkb.dto.MessageRequest;
-import lkd.namsic.cnkb.enums.ActionType;
 import lkd.namsic.cnkb.enums.ReplyType;
 import lkd.namsic.cnkb.exception.ReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.handler.WebSocketHandler;
-import lkd.namsic.cnkb.handler.common.RegisterHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +33,9 @@ public class MessageService {
 
     private final WebSocketHandler handler;
     private final ChatService chatService;
+    private final ActionHelper actionHelper;
 
     private final UserRepository userRepository;
-    private final NpcRepository npcRepository;
     private final ChatRepository chatRepository;
 
     private final List<AbstractHandler> handlers;
@@ -68,21 +64,19 @@ public class MessageService {
             }
 
             ReplyType replyType = ReplyType.parse(message);
-            if (!user.getActionType().isWait() && replyType == null) {
+            if (!this.actionHelper.getActionType(user).isWait() || replyType == null) {
                 return;
             }
 
             AbstractHandler.UserData userData = new AbstractHandler.UserData(userId, user, sender, room);
             Chat chat = this.chatRepository.findById(user.getChat().getId()).orElseThrow();
 
-            Long nextChatId = chat.getAvailableReplieMap().get(replyType);
+            Long nextChatId = chat.getAvailableRepliyMap().get(replyType);
             if (nextChatId == null) {
                 return;
             }
 
             Chat nextChat = this.chatRepository.findByIdWithNpc(nextChatId);
-            this.userRepository.updateActionType(user, BooleanUtils.isTrue(nextChat.getIsForceWait())
-                ? ActionType.FORCE_WAIT : ActionType.WAIT);
             this.chatService.startChat(userData, nextChat.getNpc(), nextChat);
 
             return;

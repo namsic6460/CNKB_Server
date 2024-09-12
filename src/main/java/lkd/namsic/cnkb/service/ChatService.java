@@ -1,5 +1,6 @@
 package lkd.namsic.cnkb.service;
 
+import lkd.namsic.cnkb.component.ActionHelper;
 import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.domain.npc.Npc;
 import lkd.namsic.cnkb.domain.npc.repository.ChatRepository;
@@ -28,6 +29,8 @@ import java.time.temporal.ChronoUnit;
 public class ChatService {
 
     private final WebSocketHandler webSocketHandler;
+    private final ActionHelper actionHelper;
+
     private final UserRepository userRepository;
     private final NpcRepository npcRepository;
     private final ChatRepository chatRepository;
@@ -49,15 +52,18 @@ public class ChatService {
     }
 
     public void startChat(AbstractHandler.UserData userData, Npc npc, Chat chat) {
-        if (chat.getDelay() != null) {
-            Mono.delay(Duration.of(chat.getDelay(), ChronoUnit.MILLIS)).block();
-        }
-
         User user = userData.getUser();
         String sender = userData.sender();
         String room = userData.room();
         String npcName = npc.getName();
         String userName = user.getName();
+
+        ActionType chatType = BooleanUtils.isTrue(chat.getIsForce()) ? ActionType.FORCE_CHAT : ActionType.CHAT;
+        this.actionHelper.setActionType(user, chatType);
+
+        if (chat.getDelay() != null) {
+            Mono.delay(Duration.of(chat.getDelay(), ChronoUnit.MILLIS)).block();
+        }
 
         while (true) {
             String message = this.formatMessage(npcName, userName, chat.getText());
@@ -70,10 +76,13 @@ public class ChatService {
                 }
 
                 continue;
-            } else if (CollectionUtils.isEmpty(chat.getAvailableReplieMap())) {
-                this.userRepository.updateActionType(user, ActionType.NONE);
+            } else if (CollectionUtils.isEmpty(chat.getAvailableRepliyMap())) {
+                this.userRepository.clearChat(user);
+                this.actionHelper.setActionType(user, ActionType.NONE);
             } else {
-                this.userRepository.updateChat(user, chat, BooleanUtils.isTrue(chat.getIsForceWait()));
+                ActionType waitType = BooleanUtils.isTrue(chat.getIsForce()) ? ActionType.FORCE_WAIT : ActionType.WAIT;
+                this.actionHelper.setActionType(user, waitType);
+                this.userRepository.updateChat(user, chat);
             }
 
             break;
