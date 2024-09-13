@@ -11,6 +11,7 @@ import lkd.namsic.cnkb.dto.KakaoMessage;
 import lkd.namsic.cnkb.dto.MessageRequest;
 import lkd.namsic.cnkb.enums.ReplyType;
 import lkd.namsic.cnkb.exception.ReplyException;
+import lkd.namsic.cnkb.exception.SkipException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.handler.WebSocketHandler;
 import lombok.RequiredArgsConstructor;
@@ -77,7 +78,7 @@ public class MessageService {
             }
 
             Chat nextChat = this.chatRepository.findByIdWithNpc(nextChatId);
-            this.chatService.startChat(userData, nextChat.getNpc(), nextChat);
+            this.chatService.startChat(userData, nextChat.getNpc(), nextChat, false);
 
             return;
         }
@@ -108,6 +109,8 @@ public class MessageService {
             this.handler.sendMessage(new MessageRequest(resultMessage, handleResult.innerMessage(), sender, room));
         } catch (ReplyException e) {
             this.handler.sendMessage(new MessageRequest(e.getMessage(), e.getInnerMessage(), sender, room));
+        } catch (SkipException e) {
+            // DO NOTHING - JUST SKIP
         } catch (Exception e) {
             log.error("Failed to handle commands", e);
             this.handler.sendMessage(new MessageRequest("처리 중 에러가 발생했습니다. 관리자를 멘션해주세요.", sender, room));

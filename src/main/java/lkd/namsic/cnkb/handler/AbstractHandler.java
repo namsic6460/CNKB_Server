@@ -33,5 +33,9 @@ public abstract class AbstractHandler {
         public HandleResult(String message) {
             this(message, null, null);
         }
+
+        public HandleResult(String message, String innerMessage) {
+            this(message, innerMessage, null);
+        }
     }
 }

@@ -33,7 +33,7 @@ public class Chat extends AbstractEntity {
 
     @Builder.Default
     @Column(nullable = false)
-    private Long delay = 1000L;
+    private Long delay = 2000L;
 
     @Column
     private Boolean isForce;

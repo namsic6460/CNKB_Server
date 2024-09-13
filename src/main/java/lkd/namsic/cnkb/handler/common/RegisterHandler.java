@@ -56,7 +56,7 @@ public class RegisterHandler extends AbstractHandler {
         this.userRepository.save(user);
 
         UserData newUserData = new UserData(userData.userId(), user, userData.sender(), userData.room());
-        this.chatService.startChat(newUserData, NpcType.UNKNOWN, NamedChat.TUTORIAL);
+        this.chatService.startChat(newUserData, NpcType.SYSTEM, NamedChat.TUTORIAL);
 
         return new HandleResult("회원가입이 완료되었습니다");
     }

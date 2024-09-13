@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum NpcType {
 
-    UNKNOWN("???"),
+    SYSTEM("시스템"),
     ;
 
     private final String value;
