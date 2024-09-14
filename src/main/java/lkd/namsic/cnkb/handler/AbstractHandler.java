@@ -2,6 +2,7 @@ package lkd.namsic.cnkb.handler;
 
 import jakarta.annotation.Nullable;
 import lkd.namsic.cnkb.domain.user.User;
+import lkd.namsic.cnkb.exception.SkipException;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,12 @@ public abstract class AbstractHandler {
     public abstract List<String> getRootCommands();
     public abstract void verify(List<String> commands, UserData userData);
     @Nullable public abstract HandleResult handle(List<String> commands, UserData userData);
+
+    protected void checkUser(UserData userData) {
+        if (userData.user == null) {
+            throw new SkipException();
+        }
+    }
 
     public record UserData(
         long userId,

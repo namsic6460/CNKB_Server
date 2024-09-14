@@ -1,12 +1,14 @@
 package lkd.namsic.cnkb.domain.user.repository;
 
-import static lkd.namsic.cnkb.domain.user.QUser.user;
-
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.ActionType;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
+import static lkd.namsic.cnkb.domain.user.QUser.user;
 
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepositoryCustom {
@@ -50,5 +52,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
             .where(user.eq(targetUser))
             .setNull(user.chat)
             .execute();
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        return Optional.ofNullable(
+            this.queryFactory.selectFrom(user)
+                .where(user.name.eq(name))
+                .fetchFirst()
+        );
     }
 }

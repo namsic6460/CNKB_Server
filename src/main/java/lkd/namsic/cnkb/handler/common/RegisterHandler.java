@@ -1,5 +1,6 @@
 package lkd.namsic.cnkb.handler.common;
 
+import lkd.namsic.cnkb.constant.Constants;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
 import lkd.namsic.cnkb.enums.NamedChat;
@@ -8,9 +9,7 @@ import lkd.namsic.cnkb.exception.ReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,14 +42,16 @@ public class RegisterHandler extends AbstractHandler {
             throw new ReplyException("닉네임은 2~16글자로 설정할 수 있습니다");
         }
 
+        if (Constants.INVALID_NAMES.contains(name.toLowerCase())) {
+            throw new ReplyException("사용이 불가능한 닉네임입니다");
+        }
+
         if (this.userRepository.existsByName(name)) {
             throw new ReplyException("이미 사용중인 닉네임입니다");
         }
     }
 
-    @Nullable
     @Override
-    @Transactional
     public HandleResult handle(List<String> commands, UserData userData) {
         User user = User.create(userData.userId(), commands.get(1));
         this.userRepository.save(user);

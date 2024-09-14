@@ -4,6 +4,8 @@ import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.ActionType;
 
+import java.util.Optional;
+
 public interface UserRepositoryCustom {
 
     boolean existsByName(String name);
@@ -11,4 +13,6 @@ public interface UserRepositoryCustom {
     void updateChat(User targetUser, Chat chat);
     ActionType getActionType(User targetUser);
     void clearChat(User targetUser);
+
+    Optional<User> findByName(String name);
 }

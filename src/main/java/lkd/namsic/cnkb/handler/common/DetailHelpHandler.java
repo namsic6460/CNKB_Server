@@ -1,7 +1,6 @@
 package lkd.namsic.cnkb.handler.common;
 
 import lkd.namsic.cnkb.handler.AbstractHandler;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class DetailHelpHandler extends AbstractHandler {
         // DO NOTHING
     }
 
-    @Nullable
     @Override
     public HandleResult handle(List<String> commands, UserData userData) {
         return new HandleResult(
