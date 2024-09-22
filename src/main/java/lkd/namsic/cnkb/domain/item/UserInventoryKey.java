@@ -10,13 +10,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Getter
 @Embeddable
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInventoryKey implements Serializable {
+public class UserInventoryKey extends InventoryKey<User> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -32,5 +30,10 @@ public class UserInventoryKey implements Serializable {
         key.item = item;
 
         return key;
+    }
+
+    @Override
+    public User getTarget() {
+        return this.user;
     }
 }

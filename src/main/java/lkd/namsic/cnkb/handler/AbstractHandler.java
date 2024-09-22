@@ -15,6 +15,7 @@ public abstract class AbstractHandler {
 
     protected void checkUser(UserData userData) {
         if (userData.user == null) {
+            // 회원가입을 하라는 메세지를 보내줘도 되지만, 악용하는 유저가 있을 수 있으니 그냥 무시
             throw new SkipException();
         }
     }

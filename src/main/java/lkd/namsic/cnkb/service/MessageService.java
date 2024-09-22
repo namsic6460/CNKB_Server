@@ -12,6 +12,7 @@ import lkd.namsic.cnkb.dto.MessageRequest;
 import lkd.namsic.cnkb.enums.ReplyType;
 import lkd.namsic.cnkb.exception.ReplyException;
 import lkd.namsic.cnkb.exception.SkipException;
+import lkd.namsic.cnkb.exception.UserReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.handler.WebSocketHandler;
 import lombok.RequiredArgsConstructor;
@@ -103,17 +104,26 @@ public class MessageService {
             String resultMessage = handleResult.message();
             if (user != null || handleResult.user() != null) {
                 user = Optional.ofNullable(user).orElseGet(handleResult::user);
-                resultMessage = "[" + user.getTitle() + "] " + user.getName() + "(Lv." + user.getLv() + ")\n" + resultMessage;
+                resultMessage = this.getUserReplyPrefix(user) + resultMessage;
             }
 
             this.handler.sendMessage(new MessageRequest(resultMessage, handleResult.innerMessage(), sender, room));
+        } catch (UserReplyException e) {
+            assert user != null;
+
+            String resultMessage = this.getUserReplyPrefix(user) + e.getMessage();
+            this.handler.sendMessage(new MessageRequest(resultMessage, e.getInnerMessage(), sender, room));
         } catch (ReplyException e) {
             this.handler.sendMessage(new MessageRequest(e.getMessage(), e.getInnerMessage(), sender, room));
         } catch (SkipException e) {
             // DO NOTHING - JUST SKIP
         } catch (Exception e) {
             log.error("Failed to handle commands", e);
-            this.handler.sendMessage(new MessageRequest("처리 중 에러가 발생했습니다. 관리자를 멘션해주세요.", sender, room));
+            this.handler.sendMessage(new MessageRequest("처리 중 에러가 발생했습니다. 관리자를 호출해주세요", sender, room));
         }
+    }
+
+    private String getUserReplyPrefix(User user) {
+        return "[" + user.getTitle() + "] " + user.getName() + "(Lv." + user.getLv() + ")\n";
     }
 }

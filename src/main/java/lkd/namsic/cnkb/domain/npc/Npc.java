@@ -24,7 +24,7 @@ public class Npc extends AbstractEntity {
     private String name;
 
     @OneToMany(mappedBy = "npc", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private final List<Chat> chatList = new ArrayList<>();
+    private final List<Chat> chats = new ArrayList<>();
 
     public static Npc create(NpcType npcType) {
         Npc npc = new Npc();
@@ -34,8 +34,8 @@ public class Npc extends AbstractEntity {
     }
 
     public void addChat(Chat chat) {
-        if (!this.chatList.contains(chat)) {
-            this.chatList.add(chat);
+        if (!this.chats.contains(chat)) {
+            this.chats.add(chat);
         }
     }
 }

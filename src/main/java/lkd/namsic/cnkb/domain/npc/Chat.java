@@ -54,7 +54,7 @@ public class Chat extends AbstractEntity {
     public void setNpc(Npc npc) {
         this.npc = npc;
 
-        if (npc != null && !npc.getChatList().contains(this)) {
+        if (npc != null && !npc.getChats().contains(this)) {
             npc.addChat(this);
         }
     }

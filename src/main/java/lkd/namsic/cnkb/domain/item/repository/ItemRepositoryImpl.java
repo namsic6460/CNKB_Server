@@ -13,7 +13,7 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Item findByName(ItemType itemType) {
+    public Item findByItemType(ItemType itemType) {
         return this.queryFactory.selectFrom(item)
             .where(item.itemType.eq(itemType))
             .fetchFirst();

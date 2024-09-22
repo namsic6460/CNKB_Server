@@ -1,11 +1,13 @@
 package lkd.namsic.cnkb.domain.user;
 
 import jakarta.persistence.*;
+import lkd.namsic.cnkb.config.converter.EnumListConverter;
 import lkd.namsic.cnkb.config.converter.StringListConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
 import lkd.namsic.cnkb.domain.item.UserInventory;
 import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.enums.ActionType;
+import lkd.namsic.cnkb.enums.ItemType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,7 +57,6 @@ public class User extends AbstractEntity {
 
     @Column(length = 15)
     @Enumerated(EnumType.STRING)
-    @Getter(AccessLevel.PRIVATE)
     private ActionType actionType;
 
     @Setter
@@ -65,10 +66,14 @@ public class User extends AbstractEntity {
 
     @Column
     @Convert(converter = StringListConverter.class)
-    private final List<String> titleList = new ArrayList<>();
+    private final List<String> titles = new ArrayList<>();
+
+    @Column(length = 320) // Item 클래스 기준 ItemType max length 31 * 10(최대 설정 개수) + 구분자(;) 9개 + 1(깔끔하게)
+    @Convert(converter = EnumListConverter.ItemTypeListConverter.class)
+    private final List<ItemType> priorityItemTypes = new ArrayList<>();
 
     @OneToMany(mappedBy = "key.user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private final List<UserInventory> userInventoryList = new ArrayList<>();
+    private final List<UserInventory> userInventories = new ArrayList<>();
 
     public static User create(long id, String name) {
         User user = new User();
@@ -84,7 +89,7 @@ public class User extends AbstractEntity {
         user.mn = user.maxMn;
         user.title = "초심자";
         user.actionType = ActionType.FORCE_CHAT;
-        user.getTitleList().add(user.title);
+        user.getTitles().add(user.title);
 
         return user;
     }

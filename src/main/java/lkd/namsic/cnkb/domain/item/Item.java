@@ -21,7 +21,7 @@ public class Item extends AbstractEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 31, nullable = false)
+    @Column(length = 31, nullable = false, unique = true)
     private ItemType itemType;
 
     @Column(nullable = false)
@@ -31,7 +31,7 @@ public class Item extends AbstractEntity {
     private String acquireWay;
 
     @OneToMany(mappedBy = "key.item", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private final List<UserInventory> userInventoryList = new ArrayList<>();
+    private final List<UserInventory> userInventories = new ArrayList<>();
 
     public static Item create(ItemType itemType, String description, String acquireWay) {
         Item item = new Item();
