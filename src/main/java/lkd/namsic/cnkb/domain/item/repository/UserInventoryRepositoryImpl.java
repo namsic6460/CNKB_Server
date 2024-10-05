@@ -55,7 +55,7 @@ public class UserInventoryRepositoryImpl implements InventoryRepositoryCustom<Us
                 userInventory.count
             ))
             .from(userInventory)
-            .where(userInventory.key.user.eq(user))
+            .where(userInventory.key.user.eq(user), userInventory.count.gt(0))
             .leftJoin(userInventory.key.item, item)
             .orderBy(item.itemType.asc())
             .offset(Constants.ITEMS_PER_PAGE * (page - 1L))

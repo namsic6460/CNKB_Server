@@ -34,9 +34,7 @@ public class InfoHandler extends AbstractHandler {
 
     @Override
     public HandleResult handle(List<String> commands, UserData userData) {
-        int length = commands.size();
-
-        switch (length) {
+        switch (commands.size()) {
             case 1 -> {
                 return this.getUserInfo(Objects.requireNonNull(userData.user()));
             }
@@ -64,12 +62,9 @@ public class InfoHandler extends AbstractHandler {
 
                 switch (subCommand.toLowerCase()) {
                     case "아이템", "item" -> {
-                        ItemType itemType = ItemType.itemTypeMap.get(target);
-                        if (itemType == null) {
-                            throw new UserReplyException("아이템을 찾을 수 없습니다");
-                        }
-
+                        ItemType itemType = ItemType.find(target);
                         Item item = this.itemRepository.findByItemType(itemType);
+
                         return this.getItemInfo(item);
                     }
 
@@ -84,13 +79,16 @@ public class InfoHandler extends AbstractHandler {
     }
 
     private HandleResult getUserInfo(User user) {
+        this.userRepository.joinAll(user);
+
         return new HandleResult(
             "===" + user.getName() + "님의 정보===\n" +
                 "\uD83D\uDCB0 소지금: " + user.getMoney() + "G\n" +
                 "♥ 체력: " + DisplayUtils.getBar(user.getHp(), user.getMaxHp()) + "\n" +
                 "\uD83D\uDCA7 마나: " + DisplayUtils.getBar(user.getMn(), user.getMaxMn()) + "\n" +
                 "⭐ 레벨: " + user.getLv() + "Lv (" + user.getExp() + "/" + LevelUtils.getRequiredExp(user.getLv()) + ")\n" +
-                "\uD83C\uDF59 스텟 포인트: " + user.getSp(),
+                "\uD83C\uDF59 스텟 포인트: " + user.getSp() + "\n" +
+                "\uD83C\uDFED 채굴기 레벨: " + user.getMiner().getLv(),
             "제작중..."
         );
     }

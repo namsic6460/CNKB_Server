@@ -64,6 +64,9 @@ public class User extends AbstractEntity {
     @OneToOne(fetch = FetchType.EAGER)
     private Chat chat;
 
+    @OneToOne(mappedBy = "user")
+    private Miner miner;
+
     @Column
     @Convert(converter = StringListConverter.class)
     private final List<String> titles = new ArrayList<>();
@@ -89,6 +92,7 @@ public class User extends AbstractEntity {
         user.mn = user.maxMn;
         user.title = "초심자";
         user.actionType = ActionType.FORCE_CHAT;
+        user.miner = Miner.create(user);
         user.getTitles().add(user.title);
 
         return user;

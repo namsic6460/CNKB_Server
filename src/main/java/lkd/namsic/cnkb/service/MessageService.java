@@ -117,6 +117,8 @@ public class MessageService {
             this.handler.sendMessage(new MessageRequest(e.getMessage(), e.getInnerMessage(), sender, room));
         } catch (SkipException e) {
             // DO NOTHING - JUST SKIP
+        } catch (NumberFormatException e) {
+            this.handler.sendMessage(new MessageRequest("숫자를 입력해주세요", null, sender, room));
         } catch (Exception e) {
             log.error("Failed to handle commands", e);
             this.handler.sendMessage(new MessageRequest("처리 중 에러가 발생했습니다. 관리자를 호출해주세요", sender, room));

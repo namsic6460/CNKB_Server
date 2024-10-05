@@ -1,6 +1,7 @@
 package lkd.namsic.cnkb.domain.item;
 
 import jakarta.persistence.*;
+import lkd.namsic.cnkb.config.converter.ItemTypeConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
 import lkd.namsic.cnkb.enums.ItemType;
 import lombok.AccessLevel;
@@ -20,7 +21,7 @@ public class Item extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ItemTypeConverter.class)
     @Column(length = 31, nullable = false, unique = true)
     private ItemType itemType;
 

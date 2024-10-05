@@ -55,6 +55,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     @Override
+    public void joinAll(User targetUser) {
+        this.queryFactory.selectFrom(user)
+            .where(user.eq(user))
+            .leftJoin(user.miner)
+            .fetchFirst();
+    }
+
+    @Override
     public Optional<User> findByName(String name) {
         return Optional.ofNullable(
             this.queryFactory.selectFrom(user)

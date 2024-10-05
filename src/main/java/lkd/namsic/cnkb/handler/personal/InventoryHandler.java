@@ -48,9 +48,9 @@ public class InventoryHandler extends AbstractHandler {
         }
 
         User user = userData.getUser();
-        int maxPage = this.inventoryService.getItemCount(user) / 50;
-        if (page - 1 > maxPage) {
-            throw new UserReplyException("최대 " + page + " 까지 표시할 수 있습니다");
+        int maxPage = this.inventoryService.getItemCount(user) / 50 + 1;
+        if (page > maxPage) {
+            throw new UserReplyException("최대 " + (page - 1) + "페이지 까지 표시할 수 있습니다");
         }
 
         List<ItemType> priorityItemTypes = user.getPriorityItemTypes();

@@ -13,6 +13,7 @@ public interface UserRepositoryCustom {
     void updateChat(User targetUser, Chat chat);
     ActionType getActionType(User targetUser);
     void clearChat(User targetUser);
+    void joinAll(User targetUser);
 
     Optional<User> findByName(String name);
 }

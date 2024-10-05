@@ -1,6 +1,5 @@
 package lkd.namsic.cnkb.enums;
 
-import lkd.namsic.cnkb.domain.npc.Npc;
 import lkd.namsic.cnkb.domain.user.User;
 import lombok.Getter;
 
@@ -11,7 +10,6 @@ import java.util.Map;
 public enum InventoryType {
 
     USER(User.class),
-    MINER(Npc.class), // TODO: 임시 클래스 타입
     ;
 
     private static final Map<Class<?>, InventoryType> classMap = new HashMap<>();

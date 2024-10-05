@@ -88,11 +88,17 @@ public class InventoryService {
         if (itemDto == null) {
             this.create(target, itemType, count);
             return count;
+        } else if (count == 0) {
+            return itemDto.count();
         }
 
         int newCount = itemDto.count() + count;
         repository.setCount(target, itemType, newCount);
 
         return newCount;
+    }
+
+    public <T> void setItem(T target, ItemType itemType, int count) {
+        this.getRepository(target).setCount(target, itemType, count);
     }
 }

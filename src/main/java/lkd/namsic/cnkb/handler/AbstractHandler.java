@@ -2,6 +2,8 @@ package lkd.namsic.cnkb.handler;
 
 import jakarta.annotation.Nullable;
 import lkd.namsic.cnkb.domain.user.User;
+import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.exception.ReplyException;
 import lkd.namsic.cnkb.exception.SkipException;
 
 import java.util.List;
@@ -17,6 +19,12 @@ public abstract class AbstractHandler {
         if (userData.user == null) {
             // 회원가입을 하라는 메세지를 보내줘도 되지만, 악용하는 유저가 있을 수 있으니 그냥 무시
             throw new SkipException();
+        }
+    }
+
+    protected void checkLength(List<String> commands, int minLength) {
+        if (commands.size() < minLength) {
+            throw new ReplyException("정확하지 않은 명령어입니다\n도움말 확인 후 다시 입력해주세요");
         }
     }
 
@@ -44,6 +52,11 @@ public abstract class AbstractHandler {
 
         public HandleResult(String message, String innerMessage) {
             this(message, innerMessage, null);
+        }
+
+        public static HandleResult itemGathered(ItemType itemType, int gatheredCount, int currentCount) {
+            String itemName = itemType.getValue();
+            return new HandleResult(itemName + " " + gatheredCount + "개를 획득하였습니다\n현재 " + itemName + " 개수: " + currentCount);
         }
     }
 }

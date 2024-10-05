@@ -1,5 +1,6 @@
 package lkd.namsic.cnkb.enums;
 
+import lkd.namsic.cnkb.exception.DataNotFoundException;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -17,7 +18,16 @@ public enum ItemType {
     COPPER("구리"),
     ;
 
-    public static final Map<String, ItemType> itemTypeMap = new HashMap<>();
+    private static final Map<String, ItemType> itemTypeMap = new HashMap<>();
+
+    public static ItemType find(String itemName) {
+        ItemType itemType = itemTypeMap.get(itemName);
+        if (itemType == null) {
+            throw DataNotFoundException.item();
+        }
+
+        return itemType;
+    }
 
     static {
         for (ItemType itemType : ItemType.values()) {

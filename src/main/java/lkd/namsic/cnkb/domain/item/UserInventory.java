@@ -1,6 +1,8 @@
 package lkd.namsic.cnkb.domain.item;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 import lkd.namsic.cnkb.domain.AbstractEntity;
 import lkd.namsic.cnkb.domain.user.User;
 import lombok.AccessLevel;
@@ -8,11 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity
+@Entity(name = "user_inventories")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user_inventory", indexes = {
-    @Index(name = "idx_user", columnList = "user_id")
-})
 public class UserInventory extends AbstractEntity implements Inventory<User> {
 
     @EmbeddedId

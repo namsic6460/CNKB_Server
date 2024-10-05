@@ -2,14 +2,13 @@ package lkd.namsic.cnkb.handler.common;
 
 import lkd.namsic.cnkb.constant.Constants;
 import lkd.namsic.cnkb.domain.user.User;
+import lkd.namsic.cnkb.domain.user.repository.MinerRepository;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
-import lkd.namsic.cnkb.enums.ItemType;
 import lkd.namsic.cnkb.enums.NamedChat;
 import lkd.namsic.cnkb.enums.NpcType;
 import lkd.namsic.cnkb.exception.ReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.ChatService;
-import lkd.namsic.cnkb.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +19,9 @@ import java.util.List;
 public class RegisterHandler extends AbstractHandler {
 
     private final UserRepository userRepository;
+    private final MinerRepository minerRepository;
+
     private final ChatService chatService;
-    private final InventoryService inventoryService;
 
     @Override
     public List<String> getRootCommands() {
@@ -58,7 +58,7 @@ public class RegisterHandler extends AbstractHandler {
     public HandleResult handle(List<String> commands, UserData userData) {
         User user = User.create(userData.userId(), commands.get(1));
         this.userRepository.save(user);
-        this.inventoryService.addItem(user, ItemType.STONE, 5);
+        this.minerRepository.save(user.getMiner());
 
         UserData newUserData = new UserData(userData.userId(), user, userData.sender(), userData.room());
         this.chatService.startChat(newUserData, NpcType.SYSTEM, NamedChat.TUTORIAL);

@@ -38,6 +38,9 @@ public class DetailHelpHandler extends AbstractHandler {
             ⚫ (정보/info/i) [{닉네임}] : 플레이어의 정보를 표시합니다
             ⚫ (가방/인벤토리/인벤/inventory/inven) [{페이지}] : 인벤토리를 표시합니다
             ⚫ (대화/chat) ({NPC 이름}) : NPC와 대화합니다
+            ⚫ (대화/chat) ({NPC 이름}) : NPC와 대화합니다
+            ⚫ (채굴기/채굴/miner) : 채굴기의 아이템을 습득합니다
+            ⚫ (연금술/연금/alchemy/a) ({아이템 이름}) [{수량}] : 광석을 광물로 변환합니다
             """
         );
     }
