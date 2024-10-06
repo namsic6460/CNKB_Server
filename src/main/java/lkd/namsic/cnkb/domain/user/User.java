@@ -5,6 +5,7 @@ import lkd.namsic.cnkb.config.converter.EnumListConverter;
 import lkd.namsic.cnkb.config.converter.StringListConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
 import lkd.namsic.cnkb.domain.item.UserInventory;
+import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.enums.ActionType;
 import lkd.namsic.cnkb.enums.ItemType;
@@ -61,8 +62,12 @@ public class User extends AbstractEntity {
 
     @Setter
     @JoinColumn(name = "chat_id")
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     private Chat chat;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "map_id", nullable = false)
+    private GameMap gameMap;
 
     @OneToOne(mappedBy = "user")
     private Miner miner;
@@ -78,7 +83,7 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "key.user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<UserInventory> userInventories = new ArrayList<>();
 
-    public static User create(long id, String name) {
+    public static User create(long id, String name, GameMap startVillage) {
         User user = new User();
         user.id = id;
         user.name = name;
@@ -92,6 +97,7 @@ public class User extends AbstractEntity {
         user.mn = user.maxMn;
         user.title = "초심자";
         user.actionType = ActionType.FORCE_CHAT;
+        user.gameMap = startVillage;
         user.miner = Miner.create(user);
         user.getTitles().add(user.title);
 

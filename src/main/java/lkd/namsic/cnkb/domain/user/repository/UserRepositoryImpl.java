@@ -58,7 +58,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     public void joinAll(User targetUser) {
         this.queryFactory.selectFrom(user)
             .where(user.eq(user))
-            .leftJoin(user.miner)
+            .leftJoin(user.gameMap).fetchJoin()
             .fetchFirst();
     }
 

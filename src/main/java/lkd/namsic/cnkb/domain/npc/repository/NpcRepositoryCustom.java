@@ -5,5 +5,5 @@ import lkd.namsic.cnkb.enums.NpcType;
 
 public interface NpcRepositoryCustom {
 
-    Npc findByType(NpcType npcType);
+    Npc findByNpcType(NpcType npcType);
 }

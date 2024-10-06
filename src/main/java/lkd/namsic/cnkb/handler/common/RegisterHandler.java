@@ -1,9 +1,12 @@
 package lkd.namsic.cnkb.handler.common;
 
 import lkd.namsic.cnkb.constant.Constants;
+import lkd.namsic.cnkb.domain.map.GameMap;
+import lkd.namsic.cnkb.domain.map.repository.GameMapRepository;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.MinerRepository;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
+import lkd.namsic.cnkb.enums.MapType;
 import lkd.namsic.cnkb.enums.NamedChat;
 import lkd.namsic.cnkb.enums.NpcType;
 import lkd.namsic.cnkb.exception.ReplyException;
@@ -20,6 +23,7 @@ public class RegisterHandler extends AbstractHandler {
 
     private final UserRepository userRepository;
     private final MinerRepository minerRepository;
+    private final GameMapRepository gameMapRepository;
 
     private final ChatService chatService;
 
@@ -56,7 +60,8 @@ public class RegisterHandler extends AbstractHandler {
 
     @Override
     public HandleResult handle(List<String> commands, UserData userData) {
-        User user = User.create(userData.userId(), commands.get(1));
+        GameMap startVillage = this.gameMapRepository.findByMapType(MapType.START_VILLAGE);
+        User user = User.create(userData.userId(), commands.get(1), startVillage);
         this.userRepository.save(user);
         this.minerRepository.save(user.getMiner());
 

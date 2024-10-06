@@ -2,6 +2,8 @@ package lkd.namsic.cnkb.handler.info;
 
 import lkd.namsic.cnkb.domain.item.Item;
 import lkd.namsic.cnkb.domain.item.repository.ItemRepository;
+import lkd.namsic.cnkb.domain.map.GameMap;
+import lkd.namsic.cnkb.domain.user.Miner;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
 import lkd.namsic.cnkb.enums.ItemType;
@@ -57,10 +59,9 @@ public class InfoHandler extends AbstractHandler {
             }
 
             default -> {
-                String subCommand = commands.get(1);
                 String target = String.join(" ", commands.subList(2, commands.size())).trim();
 
-                switch (subCommand.toLowerCase()) {
+                switch (commands.get(1).toLowerCase()) {
                     case "아이템", "item" -> {
                         ItemType itemType = ItemType.find(target);
                         Item item = this.itemRepository.findByItemType(itemType);
@@ -81,14 +82,18 @@ public class InfoHandler extends AbstractHandler {
     private HandleResult getUserInfo(User user) {
         this.userRepository.joinAll(user);
 
+        GameMap gameMap = user.getGameMap();
+        Miner miner = user.getMiner();
+
         return new HandleResult(
             "===" + user.getName() + "님의 정보===\n" +
                 "\uD83D\uDCB0 소지금: " + user.getMoney() + "G\n" +
                 "♥ 체력: " + DisplayUtils.getBar(user.getHp(), user.getMaxHp()) + "\n" +
                 "\uD83D\uDCA7 마나: " + DisplayUtils.getBar(user.getMn(), user.getMaxMn()) + "\n" +
                 "⭐ 레벨: " + user.getLv() + "Lv (" + user.getExp() + "/" + LevelUtils.getRequiredExp(user.getLv()) + ")\n" +
+                "\uD83D\uDDFA️ 현재 위치: " + gameMap.getName() + "(" + gameMap.getX() + "-" + gameMap.getY() + ")\n" +
                 "\uD83C\uDF59 스텟 포인트: " + user.getSp() + "\n" +
-                "\uD83C\uDFED 채굴기 레벨: " + user.getMiner().getLv(),
+                "\uD83C\uDFED 채굴기: " + Math.min(Math.min(miner.getSpeedLv(), miner.getQualityLv()), miner.getStorageLv()) + "Lv\n",
             "제작중..."
         );
     }

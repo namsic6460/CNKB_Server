@@ -22,7 +22,13 @@ public class Miner extends AbstractEntity {
     private User user;
 
     @Column(nullable = false)
-    private int lv;
+    private int speedLv;
+
+    @Column(nullable = false)
+    private int qualityLv;
+
+    @Column(nullable = false)
+    private int storageLv;
 
     @Column(nullable = false)
     private LocalDateTime checkedAt;
@@ -30,7 +36,9 @@ public class Miner extends AbstractEntity {
     public static Miner create(User user) {
         Miner miner = new Miner();
         miner.user = user;
-        miner.lv = 1;
+        miner.speedLv = 1;
+        miner.qualityLv = 1;
+        miner.storageLv = 1;
         miner.checkedAt = LocalDateTime.now();
 
         return miner;

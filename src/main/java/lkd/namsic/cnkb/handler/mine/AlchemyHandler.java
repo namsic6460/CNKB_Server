@@ -3,7 +3,7 @@ package lkd.namsic.cnkb.handler.mine;
 import lkd.namsic.cnkb.constant.MineConstants;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.ItemType;
-import lkd.namsic.cnkb.exception.ReplyException;
+import lkd.namsic.cnkb.exception.UserReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.InventoryService;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class AlchemyHandler extends AbstractHandler {
     private HandleResult convertItems(User user, ItemType itemType, int useCount) {
         Integer currentCount = this.inventoryService.getItemCount(user, itemType);
         if (currentCount < useCount) {
-            throw new ReplyException("아이템의 보유량 이상으로 연금술을 진행할 수 없습니다\n현재 보유량: " + currentCount + "개");
+            throw new UserReplyException("아이템의 보유량 이상으로 연금술을 진행할 수 없습니다\n현재 보유량: " + currentCount + "개");
         }
 
 

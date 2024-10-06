@@ -3,8 +3,8 @@ package lkd.namsic.cnkb.handler;
 import jakarta.annotation.Nullable;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.ItemType;
-import lkd.namsic.cnkb.exception.ReplyException;
 import lkd.namsic.cnkb.exception.SkipException;
+import lkd.namsic.cnkb.exception.UserReplyException;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +24,7 @@ public abstract class AbstractHandler {
 
     protected void checkLength(List<String> commands, int minLength) {
         if (commands.size() < minLength) {
-            throw new ReplyException("정확하지 않은 명령어입니다\n도움말 확인 후 다시 입력해주세요");
+            throw new UserReplyException("정확하지 않은 명령어입니다\n도움말 확인 후 다시 입력해주세요");
         }
     }
 

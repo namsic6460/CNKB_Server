@@ -41,7 +41,7 @@ public class ChatService {
     @Async
     @Transactional
     public void startChat(AbstractHandler.UserData userData, NpcType npcType, NamedChat namedChat) {
-        Npc npc = this.npcRepository.findByType(npcType);
+        Npc npc = this.npcRepository.findByNpcType(npcType);
         Chat chat = this.chatRepository.findByNamedChat(namedChat);
 
         this.startChat(userData, npc, chat, true);
