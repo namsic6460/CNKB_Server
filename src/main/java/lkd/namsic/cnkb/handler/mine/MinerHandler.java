@@ -90,14 +90,14 @@ public class MinerHandler extends AbstractHandler {
         int currentLv = MinerStat.getMinerStatValue(miner, minerStat);
 
         long money = user.getMoney();
-        long requiredMoneyToNext = MinerStat.getRequiredMoney(minerStat, currentLv);
+        long requiredMoneyToNext = minerStat.getRequiredMoneyForNextLv(currentLv);
 
         if (money < requiredMoneyToNext) {
             throw new UserReplyException("돈이 부족합니다. (필요 돈 : " + money + ")");
         }
 
         if (minerStat.isMaxLv(currentLv)) {
-            throw new UserReplyException("더이상 강화할 수 없습니다. (Lv : " + currentLv + ")");
+            throw new UserReplyException("이미 최대 레벨입니다. (Lv : " + currentLv + ")");
         }
 
         currentLv++;
@@ -108,6 +108,6 @@ public class MinerHandler extends AbstractHandler {
             case STORAGE -> minerRepository.updateStorageLv(miner, currentLv);
         }
 
-        return HandleResult.minerStatUpgraded(minerStat, currentLv);
+        return new HandleResult("\"" + minerStat.getKeywords().getFirst() + "\" 레벨이 1 증가하였습니다 (" + currentLv + "Lv)");
     }
 }

@@ -59,10 +59,5 @@ public abstract class AbstractHandler {
             String itemName = itemType.getValue();
             return new HandleResult(itemName + " " + gatheredCount + "개를 획득하였습니다\n현재 " + itemName + " 개수: " + currentCount);
         }
-
-        public static HandleResult minerStatUpgraded(MinerStat minerStat, int currentLv) {
-            String defaultMinerStatName = minerStat.getValue().getFirst();
-            return new HandleResult("\"" + defaultMinerStatName + "\" 레벨이 1 증가하였습니다 (" + currentLv + "Lv)");
-        }
     }
 }

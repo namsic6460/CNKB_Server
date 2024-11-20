@@ -6,40 +6,32 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 @Getter
 public enum MinerStat {
 
-    SPEED(List.of("속도", "speed"), 10),
-    QUALITY(List.of("등급", "quality"), 15),
-    STORAGE(List.of("저장량", "storage"), 20),
+    SPEED(List.of("속도", "speed"), 10, lv -> (long) Math.floor(Math.log10(lv) * 100)),
+    QUALITY(List.of("등급", "quality"), 15, lv -> (long) Math.pow(lv, 2) * 100),
+    STORAGE(List.of("저장량", "storage"), 20, lv -> (long) lv * 2),
     ;
 
     private static final HashMap<String, MinerStat> minerStatMap = new HashMap<String, MinerStat>();
 
-    private final List<String> value;
-    private final int maxLv;
-
-    public boolean isMaxLv(int currentLv) {
-        return this.getMaxLv() == currentLv;
+    static {
+        for (MinerStat minerStat : MinerStat.values()) {
+            minerStat.keywords.forEach(value -> minerStatMap.put(value, minerStat));
+        }
     }
 
-    public static long getRequiredMoney(MinerStat minerStat, long currentStatValue) {
-        switch (minerStat) {
-            case SPEED -> {
-                return (long) Math.floor(Math.log10(currentStatValue) * 100);
-            }
+    private final List<String> keywords;
+    private final int maxLv;
+    private final Function<Integer, Long> requiredMoneyForNextLv;
 
-            case QUALITY -> {
-                return (long) Math.pow(currentStatValue, 2) * 100;
-            }
-
-            case STORAGE -> {
-                return currentStatValue * 2;
-            }
-
-            default -> throw DataNotFoundException.minerStat();
-        }
+    MinerStat(List<String> keywords, int maxLv, Function<Integer, Long> requiredMoneyForNextLv) {
+        this.keywords = keywords;
+        this.maxLv = maxLv;
+        this.requiredMoneyForNextLv = requiredMoneyForNextLv;
     }
 
     public static MinerStat find(String minerStatName) {
@@ -66,14 +58,11 @@ public enum MinerStat {
         }
     }
 
-    static {
-        for (MinerStat minerStat : MinerStat.values()) {
-            minerStat.value.forEach(value -> minerStatMap.put(value, minerStat));
-        }
+    public boolean isMaxLv(int currentLv) {
+        return this.getMaxLv() == currentLv;
     }
 
-    MinerStat(List<String> value, int maxLv) {
-        this.value = value;
-        this.maxLv = maxLv;
+    public long getRequiredMoneyForNextLv(int currentLv) {
+        return this.requiredMoneyForNextLv.apply(currentLv);
     }
 }
