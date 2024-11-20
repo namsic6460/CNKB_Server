@@ -20,4 +20,28 @@ public class MinerRepositoryImpl implements MinerRepositoryCustom {
             .set(miner.checkedAt, localDateTime)
             .execute();
     }
+
+    @Override
+    public void updateSpeedLv(Miner targetMiner, int lv) {
+        this.queryFactory.update(miner)
+            .where(miner.eq(targetMiner))
+            .set(miner.speedLv, lv)
+            .execute();
+    }
+
+    @Override
+    public void updateQualityLv(Miner targetMiner, int lv) {
+        this.queryFactory.update(miner)
+            .where(miner.eq(targetMiner))
+            .set(miner.qualityLv, lv)
+            .execute();
+    }
+
+    @Override
+    public void updateStorageLv(Miner targetMiner, int lv) {
+        this.queryFactory.update(miner)
+            .where(miner.eq(targetMiner))
+            .set(miner.storageLv, lv)
+            .execute();
+    }
 }

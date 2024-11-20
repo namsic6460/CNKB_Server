@@ -5,6 +5,7 @@ import lkd.namsic.cnkb.domain.user.Miner;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.MinerRepository;
 import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.MinerStat;
 import lkd.namsic.cnkb.exception.UserReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.InventoryService;
@@ -50,6 +51,13 @@ public class MinerHandler extends AbstractHandler {
                     default -> throw new UserReplyException();
                 };
             }
+
+            case 3 -> {
+                return switch (commands.get(1).toLowerCase()) {
+                    case "upgrade", "업그레이드", "강화" -> this.upgradeMinerStat(user, miner, commands.get(2).toLowerCase());
+                    default -> throw new UserReplyException();
+                };
+            }
         }
 
         throw new UserReplyException();
@@ -74,5 +82,32 @@ public class MinerHandler extends AbstractHandler {
     private HandleResult getMinerLvInfo(Miner miner) {
         return new HandleResult("[채굴기 레벨]\n- 속도 레벨: " + miner.getSpeedLv() +
             "Lv\n- 광석 레벨: " + miner.getQualityLv() + "Lv\n- 저장고 레벨: " + miner.getStorageLv() + "Lv");
+    }
+
+    private HandleResult upgradeMinerStat(User user, Miner miner, String minerStatName) {
+        MinerStat minerStat = MinerStat.find(minerStatName);
+
+        int currentLv = MinerStat.getMinerStatValue(miner, minerStat);
+
+        long money = user.getMoney();
+        long requiredMoneyToNext = MinerStat.getRequiredMoney(minerStat, currentLv);
+
+        if (money < requiredMoneyToNext) {
+            throw new UserReplyException("돈이 부족합니다. (필요 돈 : " + money + ")");
+        }
+
+        if (minerStat.isMaxLv(currentLv)) {
+            throw new UserReplyException("더이상 강화할 수 없습니다. (Lv : " + currentLv + ")");
+        }
+
+        currentLv++;
+
+        switch (minerStat) {
+            case SPEED -> minerRepository.updateSpeedLv(miner, currentLv);
+            case QUALITY -> minerRepository.updateQualityLv(miner, currentLv);
+            case STORAGE -> minerRepository.updateStorageLv(miner, currentLv);
+        }
+
+        return HandleResult.minerStatUpgraded(minerStat, currentLv);
     }
 }

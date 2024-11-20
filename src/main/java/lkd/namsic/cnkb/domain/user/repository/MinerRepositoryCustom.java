@@ -7,4 +7,7 @@ import java.time.LocalDateTime;
 public interface MinerRepositoryCustom {
 
     void updateCheckedAt(Miner targetMiner, LocalDateTime localDateTime);
+    void updateSpeedLv(Miner targetMiner, int speedLv);
+    void updateQualityLv(Miner targetMiner, int speedLv);
+    void updateStorageLv(Miner targetMiner, int speedLv);
 }
