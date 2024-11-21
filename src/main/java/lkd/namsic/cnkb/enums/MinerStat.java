@@ -13,7 +13,7 @@ public enum MinerStat {
 
     SPEED(List.of("속도", "speed"), 10, lv -> (long) Math.floor(Math.log10(lv) * 100)),
     QUALITY(List.of("등급", "quality"), 15, lv -> (long) Math.pow(lv, 2) * 100),
-    STORAGE(List.of("저장량", "storage"), 20, lv -> (long) lv * 2),
+    STORAGE(List.of("저장량", "storage"), 20, lv -> lv * 2L),
     ;
 
     private static final HashMap<String, MinerStat> minerStatMap = new HashMap<String, MinerStat>();

@@ -48,6 +48,7 @@ public class MinerHandler extends AbstractHandler {
             case 2 -> {
                 return switch (commands.get(1).toLowerCase()) {
                     case "레벨", "lv" -> this.getMinerLvInfo(miner);
+                    case "upgrade", "업그레이드", "강화" -> throw new UserReplyException("강화할 스탯을 입력해 주세요 (속도, 등급, 저장량)");
                     default -> throw new UserReplyException();
                 };
             }
