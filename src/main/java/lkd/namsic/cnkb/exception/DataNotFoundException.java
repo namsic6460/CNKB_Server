@@ -9,4 +9,7 @@ public class DataNotFoundException extends ReplyException {
     public static DataNotFoundException item() {
         return new DataNotFoundException("아이템");
     }
+    public static DataNotFoundException minerStat() {
+        return new DataNotFoundException("Miner 스탯");
+    }
 }

@@ -3,6 +3,7 @@ package lkd.namsic.cnkb.handler;
 import jakarta.annotation.Nullable;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.MinerStat;
 import lkd.namsic.cnkb.exception.SkipException;
 import lkd.namsic.cnkb.exception.UserReplyException;
 
