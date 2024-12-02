@@ -47,6 +47,8 @@ public class HelpHandler extends AbstractHandler {
 
                 \uD83C\uDFED ㅜ 채굴기 -> 채굴기의 아이템을 습득합니다
 
+                👢 ㅜ 이동 (x 좌표) (y 좌표) -> 플레이어를 이동시킵니다
+
                 🧪 ㅜ 연금술 (아이템 이름) (개수) -> 광석을 광물로 변환합니다
                 """
         );
