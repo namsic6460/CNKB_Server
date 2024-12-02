@@ -1,6 +1,7 @@
 package lkd.namsic.cnkb.domain.user.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.ActionType;
@@ -35,6 +36,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         this.queryFactory.update(user)
             .where(user.eq(targetUser))
             .set(user.chat, chat)
+            .execute();
+    }
+
+    @Override
+    public void updateGameMap(User targetUser, GameMap gameMap) {
+        this.queryFactory.update(user)
+            .where(user.eq(targetUser))
+            .set(user.gameMap, gameMap)
             .execute();
     }
 

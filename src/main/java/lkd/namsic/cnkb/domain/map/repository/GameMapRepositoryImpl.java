@@ -5,6 +5,8 @@ import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.enums.MapType;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 import static lkd.namsic.cnkb.domain.map.QGameMap.gameMap;
 
 @RequiredArgsConstructor
@@ -17,5 +19,14 @@ public class GameMapRepositoryImpl implements GameMapRepositoryCustom {
         return this.queryFactory.selectFrom(gameMap)
             .where(gameMap.name.eq(mapType.getValue()))
             .fetchFirst();
+    }
+
+    @Override
+    public Optional<GameMap> findByXY(int x, int y) {
+        return Optional.ofNullable(
+            this.queryFactory.selectFrom(gameMap)
+                .where(gameMap.x.eq(x), gameMap.y.eq(y))
+                .fetchFirst()
+        );
     }
 }
