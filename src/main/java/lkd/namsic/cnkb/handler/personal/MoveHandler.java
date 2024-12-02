@@ -39,7 +39,7 @@ public class MoveHandler extends AbstractHandler {
         User user = userData.getUser();
         GameMap gameMap = user.getGameMap();
 
-        UserReplyException parseFailException = new UserReplyException("이동하려는 좌표는 정수여야합니다");
+        UserReplyException parseFailException = new UserReplyException("이동하려는 좌표는 정수여야 합니다");
 
         int currentX = gameMap.getX();
         int currentY = gameMap.getY();
