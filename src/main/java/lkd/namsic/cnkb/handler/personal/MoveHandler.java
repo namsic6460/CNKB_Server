@@ -41,13 +41,16 @@ public class MoveHandler extends AbstractHandler {
 
         UserReplyException parseFailException = new UserReplyException("이동하려는 좌표는 정수여야 합니다");
 
+        int gameMapLv = gameMap.getLv();
+        int userLv = user.getLv();
+
         int currentX = gameMap.getX();
         int currentY = gameMap.getY();
 
         int targetX = Optional.of(Integer.parseInt(commands.get(1))).orElseThrow(() -> parseFailException);
         int targetY = Optional.of(Integer.parseInt(commands.get(2))).orElseThrow(() -> parseFailException);
 
-        double maxMoveDistance = LevelUtils.getMaxMoveDistance(user.getLv());
+        double maxMoveDistance = LevelUtils.getMaxMoveDistance(userLv);
         double moveDistance = MathUtils.getDistance(currentX, currentY, targetX, targetY);
 
         if (moveDistance < maxMoveDistance) {
@@ -55,6 +58,10 @@ public class MoveHandler extends AbstractHandler {
         }
 
         GameMap targetMap = gameMapRepository.findByXY(targetX, targetY).orElseThrow(() -> new UserReplyException("해당 좌표에는 맵이 없습니다"));
+
+        if (userLv < gameMapLv) {
+            throw new UserReplyException("요구 레벨이 부족합니다 (레벨 : " + userLv + ", 요구 레벨 : " + gameMapLv + ")");
+        }
 
         userRepository.updateGameMap(user, targetMap);
 

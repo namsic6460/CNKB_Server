@@ -26,6 +26,9 @@ public class GameMap extends AbstractEntity {
     @Column(nullable = false)
     private int y;
 
+    @Column(nullable = false)
+    private int lv;
+
     public static GameMap create(MapType mapType, int x, int y) {
         GameMap gameMap = new GameMap();
         gameMap.name = mapType.getValue();
