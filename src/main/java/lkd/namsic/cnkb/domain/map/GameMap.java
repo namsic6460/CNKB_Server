@@ -2,6 +2,7 @@ package lkd.namsic.cnkb.domain.map;
 
 import jakarta.persistence.*;
 import lkd.namsic.cnkb.domain.AbstractEntity;
+import lkd.namsic.cnkb.enums.ItemType;
 import lkd.namsic.cnkb.enums.MapType;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,6 +26,12 @@ public class GameMap extends AbstractEntity {
 
     @Column(nullable = false)
     private int y;
+
+    @Column(nullable = false)
+    private int lv;
+
+    @Enumerated(EnumType.STRING)
+    private ItemType itemType;
 
     public static GameMap create(MapType mapType, int x, int y) {
         GameMap gameMap = new GameMap();
