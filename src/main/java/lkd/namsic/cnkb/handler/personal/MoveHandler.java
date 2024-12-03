@@ -4,8 +4,11 @@ import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.domain.map.repository.GameMapRepository;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
+import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.MapType;
 import lkd.namsic.cnkb.exception.UserReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
+import lkd.namsic.cnkb.service.InventoryService;
 import lkd.namsic.cnkb.utils.LevelUtils;
 import lkd.namsic.cnkb.utils.MathUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ public class MoveHandler extends AbstractHandler {
 
     private final GameMapRepository gameMapRepository;
     private final UserRepository userRepository;
+    private final InventoryService inventoryService;
 
     @Override
     public List<String> getRootCommands() {
@@ -57,14 +61,19 @@ public class MoveHandler extends AbstractHandler {
             throw new UserReplyException("이동할 수 없는 거리입니다\n(이동 거리 : " + moveDistance + ", 이동 가능 거리 : " + maxMoveDistance + ")");
         }
 
-        GameMap targetMap = gameMapRepository.findByXY(targetX, targetY).orElseThrow(() -> new UserReplyException("해당 좌표에는 맵이 없습니다"));
+        GameMap targetMap = gameMapRepository.findByXY(targetX, targetY).orElse(gameMapRepository.findByMapType(MapType.NONE));
+        ItemType requiredItemType = targetMap.getItemType();
 
         if (userLv < gameMapLv) {
             throw new UserReplyException("요구 레벨이 부족합니다 (레벨 : " + userLv + ", 요구 레벨 : " + gameMapLv + ")");
         }
 
+        if (requiredItemType != null && inventoryService.getItemCount(user, requiredItemType) == 0) {
+            throw new UserReplyException("\"" + requiredItemType.getValue() + "\" 아이템이 필요합니다");
+        }
+
         userRepository.updateGameMap(user, targetMap);
 
-        return null;
+        return new HandleResult("x: " + targetX + ", y: " + targetY + "(" + targetMap.getName() + ")" + "으로 이동했습니다");
     }
 }
