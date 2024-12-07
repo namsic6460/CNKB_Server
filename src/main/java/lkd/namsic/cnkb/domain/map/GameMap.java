@@ -1,12 +1,18 @@
 package lkd.namsic.cnkb.domain.map;
 
 import jakarta.persistence.*;
+import lkd.namsic.cnkb.config.converter.LocationConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
+import lkd.namsic.cnkb.domain.user.User;
+import lkd.namsic.cnkb.dto.Location;
 import lkd.namsic.cnkb.enums.ItemType;
 import lkd.namsic.cnkb.enums.MapType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -22,23 +28,30 @@ public class GameMap extends AbstractEntity {
     private String name;
 
     @Column(nullable = false)
-    private int x;
+    @Convert(converter = LocationConverter.class)
+    private Location location;
 
     @Column(nullable = false)
-    private int y;
-
-    @Column(nullable = false)
-    private int lv;
+    private int limitLv;
 
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
 
-    public static GameMap create(MapType mapType, int x, int y) {
+    @OneToMany(mappedBy = "key.user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private final List<User> passedUsers = new ArrayList<>();
+
+    public static GameMap create(MapType mapType, Location location, int limitLv) {
         GameMap gameMap = new GameMap();
         gameMap.name = mapType.getValue();
-        gameMap.x = x;
-        gameMap.y = y;
+        gameMap.location = location;
+        gameMap.limitLv = limitLv;
 
         return gameMap;
+    }
+
+    public void addPassedUser(User user) {
+        if (!this.passedUsers.contains(user)) {
+            this.passedUsers.add(user);
+        }
     }
 }

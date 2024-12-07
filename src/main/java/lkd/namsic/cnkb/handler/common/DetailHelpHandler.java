@@ -41,6 +41,7 @@ public class DetailHelpHandler extends AbstractHandler {
             ⚫ (채굴기/채굴/miner) : 채굴기의 아이템을 습득합니다
             ⚫ (채굴기/채굴/miner) (업그레이드/강화/upgrade) ({채굴기 스탯}) : 채굴기의 스탯을 올립니다
             ⚫ (연금술/연금/alchemy/a) ({아이템 이름}) [{수량}] : 광석을 광물로 변환합니다
+            ⚫ (이동/move) ({맵 이름}) : 플레이어를 이동시킵니다
             ⚫ (이동/move) ({x 좌표}) ({y 좌표}) : 플레이어를 이동시킵니다
             """
         );

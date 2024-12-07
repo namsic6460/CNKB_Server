@@ -2,6 +2,7 @@ package lkd.namsic.cnkb.domain.map.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lkd.namsic.cnkb.domain.map.GameMap;
+import lkd.namsic.cnkb.dto.Location;
 import lkd.namsic.cnkb.enums.MapType;
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +23,10 @@ public class GameMapRepositoryImpl implements GameMapRepositoryCustom {
     }
 
     @Override
-    public Optional<GameMap> findByXY(int x, int y) {
+    public Optional<GameMap> findByLocation(Location location) {
         return Optional.ofNullable(
             this.queryFactory.selectFrom(gameMap)
-                .where(gameMap.x.eq(x), gameMap.y.eq(y))
+                .where(gameMap.location.eq(location))
                 .fetchFirst()
         );
     }

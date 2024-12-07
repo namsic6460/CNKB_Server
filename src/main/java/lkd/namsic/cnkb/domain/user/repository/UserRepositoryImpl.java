@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     public void updateGameMap(User targetUser, GameMap gameMap) {
         this.queryFactory.update(user)
             .where(user.eq(targetUser))
-            .set(user.gameMap, gameMap)
+            .set(user.currentGameMap, gameMap)
             .execute();
     }
 
@@ -67,7 +67,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     public void joinAll(User targetUser) {
         this.queryFactory.selectFrom(user)
             .where(user.eq(user))
-            .leftJoin(user.gameMap).fetchJoin()
+            .leftJoin(user.currentGameMap).fetchJoin()
             .fetchFirst();
     }
 
