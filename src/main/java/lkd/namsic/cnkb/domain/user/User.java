@@ -67,7 +67,7 @@ public class User extends AbstractEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "map_id", nullable = false)
-    private GameMap gameMap;
+    private GameMap currentGameMap;
 
     @OneToOne(mappedBy = "user")
     private Miner miner;
@@ -97,7 +97,7 @@ public class User extends AbstractEntity {
         user.mn = user.maxMn;
         user.title = "초심자";
         user.actionType = ActionType.FORCE_CHAT;
-        user.gameMap = startVillage;
+        user.currentGameMap = startVillage;
         user.miner = Miner.create(user);
         user.getTitles().add(user.title);
 

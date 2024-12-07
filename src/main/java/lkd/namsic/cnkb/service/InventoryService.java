@@ -81,7 +81,7 @@ public class InventoryService {
         return repository.getItemCount(target, itemType);
     }
 
-    public <T> int addItem(T target, ItemType itemType, int count) {
+    public <T> int modifyItemCount(T target, ItemType itemType, int count) {
         InventoryRepositoryCustom<T> repository = this.getRepository(target);
         InventoryItemDto itemDto = repository.getItem(target, itemType);
 
