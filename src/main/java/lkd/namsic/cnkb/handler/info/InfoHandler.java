@@ -1,5 +1,7 @@
 package lkd.namsic.cnkb.handler.info;
 
+import java.util.List;
+import java.util.Objects;
 import lkd.namsic.cnkb.domain.item.Item;
 import lkd.namsic.cnkb.domain.item.repository.ItemRepository;
 import lkd.namsic.cnkb.domain.map.GameMap;
@@ -13,9 +15,6 @@ import lkd.namsic.cnkb.utils.DisplayUtils;
 import lkd.namsic.cnkb.utils.LevelUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -85,6 +84,13 @@ public class InfoHandler extends AbstractHandler {
         GameMap gameMap = user.getCurrentGameMap();
         Miner miner = user.getMiner();
 
+        StringBuilder statBuilder = new StringBuilder("==========");
+        user.getStat().forEach((statType, value) -> statBuilder
+            .append("\n")
+            .append(statType.getValue())
+            .append(": ")
+            .append(value));
+
         return new HandleResult(
             "===" + user.getName() + "님의 정보===\n" +
                 "\uD83D\uDCB0 소지금: " + user.getMoney() + "G\n" +
@@ -94,7 +100,7 @@ public class InfoHandler extends AbstractHandler {
                 "\uD83D\uDDFA️ 현재 위치: " + gameMap.getName() + "(" + gameMap.getLocation().x() + "-" + gameMap.getLocation().y() + ")\n" +
                 "\uD83C\uDF59 스텟 포인트: " + user.getSp() + "\n" +
                 "\uD83C\uDFED 채굴기: " + Math.min(Math.min(miner.getSpeedLv(), miner.getQualityLv()), miner.getStorageLv()) + "Lv\n",
-            "제작중..."
+            statBuilder.toString()
         );
     }
 

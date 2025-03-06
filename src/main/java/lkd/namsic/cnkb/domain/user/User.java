@@ -1,7 +1,22 @@
 package lkd.namsic.cnkb.domain.user;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import lkd.namsic.cnkb.config.converter.EnumListConverter;
+import lkd.namsic.cnkb.config.converter.StatTypeLongMapConverter;
 import lkd.namsic.cnkb.config.converter.StringListConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
 import lkd.namsic.cnkb.domain.item.UserInventory;
@@ -9,13 +24,11 @@ import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.enums.ActionType;
 import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.StatType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity(name = "users")
@@ -80,8 +93,12 @@ public class User extends AbstractEntity {
     @Convert(converter = EnumListConverter.ItemTypeListConverter.class)
     private final List<ItemType> priorityItemTypes = new ArrayList<>();
 
+    @Column
+    @Convert(converter = StatTypeLongMapConverter.class)
+    private final Map<StatType, Long> stat = new EnumMap<>(StatType.DEFAULT_STAT);
+
     @OneToMany(mappedBy = "key.user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private final List<UserInventory> userInventories = new ArrayList<>();
+    private final List<UserInventory> inventory = new ArrayList<>();
 
     public static User create(long id, String name, GameMap startVillage) {
         User user = new User();
