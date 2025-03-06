@@ -1,6 +1,10 @@
 package lkd.namsic.cnkb.service;
 
 import jakarta.annotation.PostConstruct;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lkd.namsic.cnkb.domain.item.Inventory;
 import lkd.namsic.cnkb.domain.item.InventoryKey;
 import lkd.namsic.cnkb.domain.item.Item;
@@ -14,11 +18,6 @@ import lkd.namsic.cnkb.enums.ItemType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -72,16 +71,16 @@ public class InventoryService {
         return new InventoryItemDto.InventoryItemDtoListWithPriority(priorityDtoList, dtoList);
     }
 
-    public int getItemCount(User user) {
-        return this.getRepository(user).getItemCount(user);
+    public <T> int getItemCount(T target) {
+        return this.getRepository(target).getItemCount(target);
     }
 
-    public <T> Integer getItemCount(T target, ItemType itemType) {
+    public <T> int getItemCount(T target, ItemType itemType) {
         InventoryRepositoryCustom<T> repository = this.getRepository(target);
         return repository.getItemCount(target, itemType);
     }
 
-    public <T> int addItem(T target, ItemType itemType, int count) {
+    public <T> int modifyItemCount(T target, ItemType itemType, int count) {
         InventoryRepositoryCustom<T> repository = this.getRepository(target);
         InventoryItemDto itemDto = repository.getItem(target, itemType);
 

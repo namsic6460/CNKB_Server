@@ -1,9 +1,8 @@
 package lkd.namsic.cnkb.handler.common;
 
+import java.util.List;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class DetailHelpHandler extends AbstractHandler {
@@ -39,8 +38,11 @@ public class DetailHelpHandler extends AbstractHandler {
             ⚫ (가방/인벤토리/인벤/inventory/inven) [{페이지}] : 인벤토리를 표시합니다
             ⚫ (대화/chat) ({NPC 이름}) : NPC와 대화합니다
             ⚫ (채굴기/채굴/miner) : 채굴기의 아이템을 습득합니다
-            ⚫ (채굴기/채굴/miner) (업그레이드/강화/upgrade) [{채굴기 스탯}]: 채굴기의 스탯을 올립니다
+            ⚫ (채굴기/채굴/miner) (업그레이드/강화/upgrade) ({채굴기 스탯}) : 채굴기의 스탯을 올립니다
             ⚫ (연금술/연금/alchemy/a) ({아이템 이름}) [{수량}] : 광석을 광물로 변환합니다
+            ⚫ (맵/map) : 이동 가능한 맵 이름을 확인합니다
+            ⚫ (이동/move) ({맵 이름}) : 해당 맵으로 이동합니다
+            ⚫ (이동/move) ({x 좌표}) ({y 좌표}) : 해당 좌표의 맵으로 이동합니다
             """
         );
     }

@@ -1,9 +1,8 @@
 package lkd.namsic.cnkb.handler.common;
 
+import java.util.List;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class HelpHandler extends AbstractHandler {
@@ -46,6 +45,10 @@ public class HelpHandler extends AbstractHandler {
                 💬 ㅜ 대화 (Npc 이름) -> Npc 와 대화합니다
 
                 \uD83C\uDFED ㅜ 채굴기 -> 채굴기의 아이템을 습득합니다
+                
+                🗺️ ㅜ 맵 -> 이동 가능한 맵 목록을 확인합니다
+
+                👢 ㅜ 이동 (맵 이름) -> 해당 맵으로 이동합니다
 
                 🧪 ㅜ 연금술 (아이템 이름) (개수) -> 광석을 광물로 변환합니다
                 """

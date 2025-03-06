@@ -78,7 +78,7 @@ public class AlchemyHandler extends AbstractHandler {
                 ItemType convertedItemType = entry.getKey();
                 Integer convertedCount = entry.getValue();
 
-                this.inventoryService.addItem(user, convertedItemType, convertedCount);
+                this.inventoryService.modifyItemCount(user, convertedItemType, convertedCount);
                 builder.append("\n")
                     .append(convertedItemType.getValue())
                     .append(": ")

@@ -8,6 +8,7 @@ import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.domain.npc.Npc;
 import lkd.namsic.cnkb.domain.npc.repository.ChatRepository;
 import lkd.namsic.cnkb.domain.npc.repository.NpcRepository;
+import lkd.namsic.cnkb.dto.Location;
 import lkd.namsic.cnkb.enums.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -41,11 +42,11 @@ public class StartUpListener implements ApplicationListener<ApplicationReadyEven
     }
 
     private void createGameMaps() {
-        this.gameMapRepository.save(GameMap.create(MapType.NONE, Integer.MAX_VALUE, Integer.MAX_VALUE));
-        this.gameMapRepository.save(GameMap.create(MapType.START_VILLAGE, 0, 0));
-        this.gameMapRepository.save(GameMap.create(MapType.ADVENTURE_FIELD, 0, 1));
-        this.gameMapRepository.save(GameMap.create(MapType.QUITE_SEASHORE, 1, 0));
-        this.gameMapRepository.save(GameMap.create(MapType.PEACEFUL_RIVER, 1, 1));
+        this.gameMapRepository.save(GameMap.create(MapType.NONE, new Location(Integer.MAX_VALUE, Integer.MAX_VALUE), 0));
+        this.gameMapRepository.save(GameMap.create(MapType.START_VILLAGE, new Location(0, 0), 0));
+        this.gameMapRepository.save(GameMap.create(MapType.ADVENTURE_FIELD, new Location(0, 1), 0));
+        this.gameMapRepository.save(GameMap.create(MapType.QUITE_SEASHORE, new Location(1, 0), 0));
+        this.gameMapRepository.save(GameMap.create(MapType.PEACEFUL_RIVER, new Location(1, 1), 0));
     }
 
     private void createItems() {

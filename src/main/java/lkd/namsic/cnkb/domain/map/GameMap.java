@@ -1,7 +1,20 @@
 package lkd.namsic.cnkb.domain.map;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
+import lkd.namsic.cnkb.config.converter.LocationConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
+import lkd.namsic.cnkb.domain.item.MapLimitItem;
+import lkd.namsic.cnkb.dto.Location;
 import lkd.namsic.cnkb.enums.MapType;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,16 +34,23 @@ public class GameMap extends AbstractEntity {
     private String name;
 
     @Column(nullable = false)
-    private int x;
+    @Convert(converter = LocationConverter.class)
+    private Location location;
 
     @Column(nullable = false)
-    private int y;
+    private int limitLv;
 
-    public static GameMap create(MapType mapType, int x, int y) {
+    @OneToMany(mappedBy = "key.map", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private final List<PassedMap> passedMaps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "key.map", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private final List<MapLimitItem> mapLimitItems = new ArrayList<>();
+
+    public static GameMap create(MapType mapType, Location location, int limitLv) {
         GameMap gameMap = new GameMap();
         gameMap.name = mapType.getValue();
-        gameMap.x = x;
-        gameMap.y = y;
+        gameMap.location = location;
+        gameMap.limitLv = limitLv;
 
         return gameMap;
     }

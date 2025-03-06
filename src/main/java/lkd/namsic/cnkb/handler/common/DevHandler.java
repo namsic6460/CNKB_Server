@@ -1,9 +1,8 @@
 package lkd.namsic.cnkb.handler.common;
 
+import java.util.List;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class DevHandler extends AbstractHandler {
@@ -22,9 +21,9 @@ public class DevHandler extends AbstractHandler {
     public HandleResult handle(List<String> commands, UserData userData) {
         return new HandleResult(
             """
-            닉네임 : 남식(namsic)
-            이메일 : namsic6460@gmail.com
-            문의 : 개인 카카오톡 또는 이메일
+            닉네임: 남식(namsic)
+            이메일: namsic6460@gmail.com
+            문의: 개인 카카오톡 또는 이메일
             """
         );
     }

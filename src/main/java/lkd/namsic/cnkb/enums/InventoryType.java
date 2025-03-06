@@ -1,15 +1,16 @@
 package lkd.namsic.cnkb.enums;
 
-import lkd.namsic.cnkb.domain.user.User;
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.Map;
+import lkd.namsic.cnkb.domain.map.GameMap;
+import lkd.namsic.cnkb.domain.user.User;
+import lombok.Getter;
 
 @Getter
 public enum InventoryType {
 
     USER(User.class),
+    MAP(GameMap.class)
     ;
 
     private static final Map<Class<?>, InventoryType> classMap = new HashMap<>();

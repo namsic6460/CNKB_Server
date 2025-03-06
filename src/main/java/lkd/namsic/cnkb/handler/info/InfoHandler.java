@@ -81,7 +81,7 @@ public class InfoHandler extends AbstractHandler {
     private HandleResult getUserInfo(User user) {
         this.userRepository.joinAll(user);
 
-        GameMap gameMap = user.getGameMap();
+        GameMap gameMap = user.getCurrentGameMap();
         Miner miner = user.getMiner();
 
         StringBuilder statBuilder = new StringBuilder("==========");
@@ -97,7 +97,7 @@ public class InfoHandler extends AbstractHandler {
                 "♥ 체력: " + DisplayUtils.getBar(user.getHp(), user.getMaxHp()) + "\n" +
                 "\uD83D\uDCA7 마나: " + DisplayUtils.getBar(user.getMn(), user.getMaxMn()) + "\n" +
                 "⭐ 레벨: " + user.getLv() + "Lv (" + user.getExp() + "/" + LevelUtils.getRequiredExp(user.getLv()) + ")\n" +
-                "\uD83D\uDDFA️ 현재 위치: " + gameMap.getName() + "(" + gameMap.getX() + "-" + gameMap.getY() + ")\n" +
+                "\uD83D\uDDFA️ 현재 위치: " + gameMap.getName() + "(" + gameMap.getLocation().x() + "-" + gameMap.getLocation().y() + ")\n" +
                 "\uD83C\uDF59 스텟 포인트: " + user.getSp() + "\n" +
                 "\uD83C\uDFED 채굴기: " + Math.min(Math.min(miner.getSpeedLv(), miner.getQualityLv()), miner.getStorageLv()) + "Lv\n",
             statBuilder.toString()

@@ -8,4 +8,9 @@ public class LevelUtils {
     public static long getRequiredExp(int lv) {
         return 1000L * lv;
     }
+
+    public static double getMaxMoveDistance(int lv) {
+        int intDistance = (lv - 1) / 25;
+        return 1 + intDistance;
+    }
 }

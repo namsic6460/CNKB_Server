@@ -18,9 +18,9 @@ public class UserInventory extends AbstractEntity implements Inventory<User> {
     private UserInventoryKey key;
 
     @Column(nullable = false)
-    private Integer count;
+    private int count;
 
-    public static UserInventory create(User user, Item item, Integer count) {
+    public static UserInventory create(User user, Item item, int count) {
         UserInventory userInventory = new UserInventory();
         userInventory.key = UserInventoryKey.create(user, item);
         userInventory.count = count;

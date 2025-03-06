@@ -1,5 +1,7 @@
 package lkd.namsic.cnkb.enums;
 
+import java.util.HashMap;
+import lkd.namsic.cnkb.exception.DataNotFoundException;
 import lombok.Getter;
 
 @Getter
@@ -12,9 +14,26 @@ public enum MapType {
     PEACEFUL_RIVER("평화로운 강")
     ;
 
+    private static final HashMap<String, MapType> mapTypeMap = new HashMap<>();
+
+    static {
+        for (MapType mapType : MapType.values()) {
+            mapTypeMap.put(mapType.value, mapType);
+        }
+    }
+
     private final String value;
 
     MapType(String value) {
         this.value = value;
+    }
+
+    public static MapType find(String mapName) {
+        MapType mapType = mapTypeMap.get(mapName);
+        if (mapType == null) {
+            throw DataNotFoundException.minerStat();
+        }
+
+        return mapType;
     }
 }

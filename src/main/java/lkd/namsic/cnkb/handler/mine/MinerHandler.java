@@ -1,5 +1,8 @@
 package lkd.namsic.cnkb.handler.mine;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import lkd.namsic.cnkb.constant.MineConstants;
 import lkd.namsic.cnkb.domain.user.Miner;
 import lkd.namsic.cnkb.domain.user.User;
@@ -12,10 +15,6 @@ import lkd.namsic.cnkb.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -48,7 +47,7 @@ public class MinerHandler extends AbstractHandler {
             case 2 -> {
                 return switch (commands.get(1).toLowerCase()) {
                     case "레벨", "lv" -> this.getMinerLvInfo(miner);
-                    case "upgrade", "업그레이드", "강화" -> throw new UserReplyException("강화할 스탯을 입력해 주세요 (속도, 등급, 저장량)");
+                    case "upgrade", "업그레이드", "강화" -> throw new UserReplyException("강화할 스탯을 입력해 주세요\n(속도, 등급, 저장량)");
                     default -> throw new UserReplyException();
                 };
             }
@@ -76,7 +75,7 @@ public class MinerHandler extends AbstractHandler {
         this.minerRepository.updateCheckedAt(miner, miner.getCheckedAt().plusSeconds(gatheredCount * gatherDelay));
 
         gatheredCount = Math.min(gatheredCount, MineConstants.MINER_MAX_STORAGE_COUNT.get(miner.getStorageLv() - 1));
-        int currentCount = this.inventoryService.addItem(user, itemType, (int) gatheredCount);
+        int currentCount = this.inventoryService.modifyItemCount(user, itemType, (int) gatheredCount);
         return HandleResult.itemGathered(itemType, (int) gatheredCount, currentCount);
     }
 
@@ -94,21 +93,21 @@ public class MinerHandler extends AbstractHandler {
         long requiredMoneyToNext = minerStat.getRequiredMoneyForNextLv(currentLv);
 
         if (money < requiredMoneyToNext) {
-            throw new UserReplyException("돈이 부족합니다. (필요 돈 : " + money + ")");
+            throw new UserReplyException("돈이 부족합니다\n(현재 돈: " + money + "G, 필요 돈: " + requiredMoneyToNext + "G)");
         }
 
         if (minerStat.isMaxLv(currentLv)) {
-            throw new UserReplyException("이미 최대 레벨입니다. (Lv : " + currentLv + ")");
+            throw new UserReplyException("이미 최대 레벨입니다\n(현재 Lv: " + currentLv + ")");
         }
 
         currentLv++;
 
         switch (minerStat) {
-            case SPEED -> minerRepository.updateSpeedLv(miner, currentLv);
-            case QUALITY -> minerRepository.updateQualityLv(miner, currentLv);
-            case STORAGE -> minerRepository.updateStorageLv(miner, currentLv);
+            case SPEED -> this.minerRepository.updateSpeedLv(miner, currentLv);
+            case QUALITY -> this.minerRepository.updateQualityLv(miner, currentLv);
+            case STORAGE -> this.minerRepository.updateStorageLv(miner, currentLv);
         }
 
-        return new HandleResult("\"" + minerStat.getKeywords().getFirst() + "\" 레벨이 1 증가하였습니다 (" + currentLv + "Lv)");
+        return new HandleResult("\"" + minerStat.getKeywords().getFirst() + "\" 레벨이 1 증가하였습니다\n(현재 Lv: " + currentLv + ")");
     }
 }
