@@ -1,18 +1,24 @@
 package lkd.namsic.cnkb.domain.map;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lkd.namsic.cnkb.config.converter.LocationConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
-import lkd.namsic.cnkb.domain.user.User;
+import lkd.namsic.cnkb.domain.item.MapLimitItem;
 import lkd.namsic.cnkb.dto.Location;
-import lkd.namsic.cnkb.enums.ItemType;
 import lkd.namsic.cnkb.enums.MapType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -34,11 +40,11 @@ public class GameMap extends AbstractEntity {
     @Column(nullable = false)
     private int limitLv;
 
-    @Enumerated(EnumType.STRING)
-    private ItemType itemType;
+    @OneToMany(mappedBy = "key.map", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private final List<PassedMap> passedMaps = new ArrayList<>();
 
-    @OneToMany(mappedBy = "key.user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private final List<User> passedUsers = new ArrayList<>();
+    @OneToMany(mappedBy = "key.map", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private final List<MapLimitItem> mapLimitItems = new ArrayList<>();
 
     public static GameMap create(MapType mapType, Location location, int limitLv) {
         GameMap gameMap = new GameMap();
@@ -47,11 +53,5 @@ public class GameMap extends AbstractEntity {
         gameMap.limitLv = limitLv;
 
         return gameMap;
-    }
-
-    public void addPassedUser(User user) {
-        if (!this.passedUsers.contains(user)) {
-            this.passedUsers.add(user);
-        }
     }
 }

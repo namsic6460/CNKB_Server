@@ -1,22 +1,22 @@
 package lkd.namsic.cnkb.enums;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.Function;
 import lkd.namsic.cnkb.domain.user.Miner;
 import lkd.namsic.cnkb.exception.DataNotFoundException;
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.Function;
-
 @Getter
 public enum MinerStat {
 
+    // TODO: @namsic
     SPEED(List.of("속도", "speed"), 10, lv -> (long) Math.floor(Math.log10(lv) * 100)),
     QUALITY(List.of("등급", "quality"), 15, lv -> (long) Math.pow(lv, 2) * 100),
     STORAGE(List.of("저장량", "storage"), 20, lv -> lv * 2L),
     ;
 
-    private static final HashMap<String, MinerStat> minerStatMap = new HashMap<String, MinerStat>();
+    private static final HashMap<String, MinerStat> minerStatMap = new HashMap<>();
 
     static {
         for (MinerStat minerStat : MinerStat.values()) {

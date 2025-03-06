@@ -11,6 +11,6 @@ public class LevelUtils {
 
     public static double getMaxMoveDistance(int lv) {
         int intDistance = (lv - 1) / 25;
-        return 0.99 + intDistance;
+        return 1 + intDistance;
     }
 }

@@ -11,6 +11,6 @@ public class MathUtils {
     }
 
     public static double getDistance(Location location1, Location location2) {
-        return Math.floor(100 * Math.sqrt(Math.pow(location1.x() -location2.x(), 2) + Math.pow(location1.y() - location2.y(), 2))) / 100;
+        return getDistance(location1.x(), location1.y(), location2.x(), location2.y());
     }
 }

@@ -1,5 +1,8 @@
 package lkd.namsic.cnkb.handler.mine;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import lkd.namsic.cnkb.constant.MineConstants;
 import lkd.namsic.cnkb.domain.user.Miner;
 import lkd.namsic.cnkb.domain.user.User;
@@ -12,10 +15,6 @@ import lkd.namsic.cnkb.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -94,21 +93,21 @@ public class MinerHandler extends AbstractHandler {
         long requiredMoneyToNext = minerStat.getRequiredMoneyForNextLv(currentLv);
 
         if (money < requiredMoneyToNext) {
-            throw new UserReplyException("돈이 부족합니다\n(필요 돈 : " + money + ")");
+            throw new UserReplyException("돈이 부족합니다\n(현재 돈: " + money + "G, 필요 돈: " + requiredMoneyToNext + "G)");
         }
 
         if (minerStat.isMaxLv(currentLv)) {
-            throw new UserReplyException("이미 최대 레벨입니다\n(Lv : " + currentLv + ")");
+            throw new UserReplyException("이미 최대 레벨입니다\n(현재 Lv: " + currentLv + ")");
         }
 
         currentLv++;
 
         switch (minerStat) {
-            case SPEED -> minerRepository.updateSpeedLv(miner, currentLv);
-            case QUALITY -> minerRepository.updateQualityLv(miner, currentLv);
-            case STORAGE -> minerRepository.updateStorageLv(miner, currentLv);
+            case SPEED -> this.minerRepository.updateSpeedLv(miner, currentLv);
+            case QUALITY -> this.minerRepository.updateQualityLv(miner, currentLv);
+            case STORAGE -> this.minerRepository.updateStorageLv(miner, currentLv);
         }
 
-        return new HandleResult("\"" + minerStat.getKeywords().getFirst() + "\" 레벨이 1 증가하였습니다\n(" + currentLv + "Lv)");
+        return new HandleResult("\"" + minerStat.getKeywords().getFirst() + "\" 레벨이 1 증가하였습니다\n(현재 Lv: " + currentLv + ")");
     }
 }
