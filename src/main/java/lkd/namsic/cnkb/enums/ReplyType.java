@@ -1,10 +1,10 @@
 package lkd.namsic.cnkb.enums;
 
-import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
-
+import jakarta.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Set;
+import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter
 public enum ReplyType {
@@ -23,6 +23,7 @@ public enum ReplyType {
         this.values = Set.of(values);
     }
 
+    @Nullable
     public static ReplyType parse(String string) {
         if (StringUtils.isBlank(string)) {
             return null;

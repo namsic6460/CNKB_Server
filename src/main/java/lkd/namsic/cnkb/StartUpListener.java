@@ -12,11 +12,11 @@ import lkd.namsic.cnkb.domain.npc.Npc;
 import lkd.namsic.cnkb.domain.npc.repository.ChatRepository;
 import lkd.namsic.cnkb.domain.npc.repository.NpcRepository;
 import lkd.namsic.cnkb.dto.Location;
-import lkd.namsic.cnkb.enums.ItemType;
-import lkd.namsic.cnkb.enums.MapType;
 import lkd.namsic.cnkb.enums.NamedChat;
-import lkd.namsic.cnkb.enums.NpcType;
 import lkd.namsic.cnkb.enums.ReplyType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
+import lkd.namsic.cnkb.enums.domain.MapType;
+import lkd.namsic.cnkb.enums.domain.NpcType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -287,6 +287,7 @@ public class StartUpListener implements ApplicationListener<ApplicationReadyEven
 
     private void createChats() {
         Npc systemNpc = this.npcRepository.findByNpcType(NpcType.SYSTEM);
+        Npc noa = this.npcRepository.findByNpcType(NpcType.NOA);
 
         // Tutorial
         {
@@ -333,6 +334,32 @@ public class StartUpListener implements ApplicationListener<ApplicationReadyEven
             chat = this.createNextChat(
                 chat,
                 builder -> builder.text("보다 자세한 정보는 게임을 플레이하며 습득합시다\n일단 " + focus("ㅜ 대화 노아") + " 명령어로 현재 맵에 있는 '노아' NPC와 대화해보세요")
+            );
+
+            this.chatRepository.save(chat);
+        }
+
+        {
+            Chat chat = Chat.builder()
+                .text("오 드디어 깨어났군. 숲에 쓰러져있는 것을 보고 마을 주민이 자네를 데려왔다네. 기억이 좀 나는가?")
+                .npc(noa)
+                .isFirst(true)
+                .build();
+            this.chatRepository.save(chat);
+
+            chat = this.createNextChat(
+                chat,
+                builder -> builder.text("기억이 안나는 모양이구만. 혹시 이름은 기억나는가?")
+            );
+
+            chat = this.createNextChat(
+                chat,
+                builder -> builder.text("{name} 라고? 그래그래 한동안 마을에 지내면서 푹 쉬다 가게나. 그나저나... 살려준 것에 대한 보답은 받아야겠지?")
+            );
+
+            chat = this.createNextChat(
+                chat,
+                builder -> builder.text("껄껄 걱정하지 말게, 딱히 뭘 받을 생각으로 도와준 것은 아니니. 이런 작은 마을에서 지내려면 정이 있어야 안되겠나. 그냥 가끔 들러서 부탁만 좀 들어주게나")
             );
 
             this.chatRepository.save(chat);

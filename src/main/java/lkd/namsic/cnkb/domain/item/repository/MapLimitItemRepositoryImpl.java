@@ -12,7 +12,7 @@ import lkd.namsic.cnkb.domain.item.dto.InventoryItemDto;
 import lkd.namsic.cnkb.domain.item.dto.QInventoryItemDto;
 import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.enums.InventoryType;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

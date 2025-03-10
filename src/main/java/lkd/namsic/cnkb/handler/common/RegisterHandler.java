@@ -1,21 +1,20 @@
 package lkd.namsic.cnkb.handler.common;
 
+import java.util.List;
 import lkd.namsic.cnkb.constant.Constants;
 import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.domain.map.repository.GameMapRepository;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.MinerRepository;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
-import lkd.namsic.cnkb.enums.MapType;
 import lkd.namsic.cnkb.enums.NamedChat;
-import lkd.namsic.cnkb.enums.NpcType;
+import lkd.namsic.cnkb.enums.domain.MapType;
+import lkd.namsic.cnkb.enums.domain.NpcType;
 import lkd.namsic.cnkb.exception.ReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

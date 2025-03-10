@@ -2,8 +2,9 @@ package lkd.namsic.cnkb.domain.item;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,9 +14,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import lkd.namsic.cnkb.config.converter.ItemTypeConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +33,7 @@ public class Item extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Convert(converter = ItemTypeConverter.class)
+    @Enumerated(EnumType.STRING)
     @Column(length = 31, nullable = false, unique = true)
     private ItemType itemType;
 

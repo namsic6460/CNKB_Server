@@ -1,15 +1,25 @@
 package lkd.namsic.cnkb.domain.npc;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
 import lkd.namsic.cnkb.domain.AbstractEntity;
 import lkd.namsic.cnkb.domain.map.GameMap;
-import lkd.namsic.cnkb.enums.NpcType;
+import lkd.namsic.cnkb.enums.domain.NpcType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -21,8 +31,9 @@ public class Npc extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 31, nullable = false, unique = true)
-    private String name;
+    private NpcType npcType;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "map_id", nullable = false)
@@ -33,7 +44,7 @@ public class Npc extends AbstractEntity {
 
     public static Npc create(NpcType npcType, GameMap gameMap) {
         Npc npc = new Npc();
-        npc.name = npcType.getValue();
+        npc.npcType = npcType;
         npc.gameMap = gameMap;
 
         return npc;

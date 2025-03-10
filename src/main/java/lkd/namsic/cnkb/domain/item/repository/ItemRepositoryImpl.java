@@ -1,11 +1,11 @@
 package lkd.namsic.cnkb.domain.item.repository;
 
+import static lkd.namsic.cnkb.domain.item.QItem.item;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lkd.namsic.cnkb.domain.item.Item;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lombok.RequiredArgsConstructor;
-
-import static lkd.namsic.cnkb.domain.item.QItem.item;
 
 @RequiredArgsConstructor
 public class ItemRepositoryImpl implements ItemRepositoryCustom {

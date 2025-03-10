@@ -1,10 +1,9 @@
 package lkd.namsic.cnkb.domain.item.repository;
 
+import java.util.List;
 import lkd.namsic.cnkb.domain.item.dto.InventoryItemDto;
 import lkd.namsic.cnkb.enums.InventoryType;
-import lkd.namsic.cnkb.enums.ItemType;
-
-import java.util.List;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 
 public interface InventoryRepositoryCustom<T> {
 

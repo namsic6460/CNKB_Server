@@ -8,7 +8,7 @@ import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.domain.user.Miner;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lkd.namsic.cnkb.exception.UserReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.utils.DisplayUtils;

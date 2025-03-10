@@ -13,19 +13,22 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import lkd.namsic.cnkb.config.converter.EnumListConverter;
+import java.util.Set;
+import lkd.namsic.cnkb.config.converter.EnumCollectionConverter;
+import lkd.namsic.cnkb.config.converter.EnumCollectionConverter.NpcTypeSetConverter;
 import lkd.namsic.cnkb.config.converter.StatTypeLongMapConverter;
 import lkd.namsic.cnkb.config.converter.StringListConverter;
 import lkd.namsic.cnkb.domain.AbstractEntity;
 import lkd.namsic.cnkb.domain.item.UserInventory;
 import lkd.namsic.cnkb.domain.map.GameMap;
-import lkd.namsic.cnkb.domain.map.PassedMap;
 import lkd.namsic.cnkb.domain.npc.Chat;
 import lkd.namsic.cnkb.enums.ActionType;
-import lkd.namsic.cnkb.enums.ItemType;
 import lkd.namsic.cnkb.enums.StatType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
+import lkd.namsic.cnkb.enums.domain.NpcType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -91,15 +94,16 @@ public class User extends AbstractEntity {
     private final List<String> titles = new ArrayList<>();
 
     @Column(length = 320) // Item 클래스 기준 ItemType max length 31 * 10(최대 설정 개수) + 구분자(;) 9개 + 1(깔끔하게)
-    @Convert(converter = EnumListConverter.ItemTypeListConverter.class)
+    @Convert(converter = EnumCollectionConverter.ItemTypeListConverter.class)
     private final List<ItemType> priorityItemTypes = new ArrayList<>();
+
+    @Column(length = 1000)
+    @Convert(converter = NpcTypeSetConverter.class)
+    private final Set<NpcType> metNpcTypes = new HashSet<>();
 
     @Column
     @Convert(converter = StatTypeLongMapConverter.class)
     private final Map<StatType, Long> stat = new EnumMap<>(StatType.DEFAULT_STAT);
-
-    @OneToMany(mappedBy = "key.user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private final List<PassedMap> passedMaps = new ArrayList<>();
 
     @OneToMany(mappedBy = "key.user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<UserInventory> inventory = new ArrayList<>();

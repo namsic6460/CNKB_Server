@@ -1,7 +1,7 @@
 package lkd.namsic.cnkb.domain.item.repository;
 
 import lkd.namsic.cnkb.domain.item.Item;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 
 public interface ItemRepositoryCustom {
 

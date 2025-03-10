@@ -1,5 +1,6 @@
 package lkd.namsic.cnkb.config.converter;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 public class StatTypeLongMapConverter implements AttributeConverter<Map<StatType, Long>, String> {
 
     @Override
+    @Nullable
     public String convertToDatabaseColumn(Map<StatType, Long> attribute) {
         if (CollectionUtils.isEmpty(attribute)) {
             return null;

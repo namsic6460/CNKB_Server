@@ -45,7 +45,13 @@ public class MessageService {
     @PostConstruct
     public void postConstruct() {
         this.handlers.forEach(handler ->
-            handler.getRootCommands().forEach(rootCommand -> this.handlerMap.put(rootCommand, handler))
+            handler.getRootCommands().forEach(rootCommand -> {
+                AbstractHandler prevHandler = this.handlerMap.put(rootCommand, handler);
+
+                if (prevHandler != null) {
+                    throw new IllegalArgumentException("Duplicated command: " + rootCommand);
+                }
+            })
         );
     }
 

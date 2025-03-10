@@ -1,20 +1,21 @@
 package lkd.namsic.cnkb.config.converter;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import lkd.namsic.cnkb.enums.ReplyType;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lkd.namsic.cnkb.enums.ReplyType;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 @Converter
 public class ReplyTypeLongMapConverter implements AttributeConverter<Map<ReplyType, Long>, String> {
 
     @Override
+    @Nullable
     public String convertToDatabaseColumn(Map<ReplyType, Long> attribute) {
         if (CollectionUtils.isEmpty(attribute)) {
             return null;

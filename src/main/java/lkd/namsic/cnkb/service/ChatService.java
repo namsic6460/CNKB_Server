@@ -1,5 +1,8 @@
 package lkd.namsic.cnkb.service;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
 import lkd.namsic.cnkb.common.Emoji;
 import lkd.namsic.cnkb.component.ActionHelper;
 import lkd.namsic.cnkb.domain.npc.Chat;
@@ -11,21 +14,16 @@ import lkd.namsic.cnkb.domain.user.repository.UserRepository;
 import lkd.namsic.cnkb.dto.MessageRequest;
 import lkd.namsic.cnkb.enums.ActionType;
 import lkd.namsic.cnkb.enums.NamedChat;
-import lkd.namsic.cnkb.enums.NpcType;
 import lkd.namsic.cnkb.enums.ReplyType;
+import lkd.namsic.cnkb.enums.domain.NpcType;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.handler.WebSocketHandler;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -51,10 +49,10 @@ public class ChatService {
         User user = userData.getUser();
         String sender = userData.sender();
         String room = userData.room();
-        String npcName = npc.getName();
+        String npcName = npc.getNpcType().getValue();
         String userName = user.getName();
 
-        ActionType chatType = BooleanUtils.isTrue(chat.getIsForce()) ? ActionType.FORCE_CHAT : ActionType.CHAT;
+        ActionType chatType = chat.isForce() ? ActionType.FORCE_CHAT : ActionType.CHAT;
         this.actionHelper.setActionType(user, chatType);
 
         if (delay && chat.getDelay() != null) {
@@ -82,7 +80,7 @@ public class ChatService {
                     .collect(Collectors.joining(" / "));
                 message += "\n\n가능한 대답: " + Emoji.focus(replyTypes);
 
-                ActionType waitType = BooleanUtils.isTrue(chat.getIsForce()) ? ActionType.FORCE_WAIT : ActionType.WAIT;
+                ActionType waitType = chat.isForce() ? ActionType.FORCE_WAIT : ActionType.WAIT;
                 this.actionHelper.setActionType(user, waitType);
                 this.userRepository.updateChat(user, chat);
             }
@@ -93,6 +91,6 @@ public class ChatService {
     }
 
     private String formatMessage(String npcName, String userName, String text) {
-        return "[NPC] " + npcName + " -> " + userName + "\n" + text;
+        return "[NPC] " + npcName + " -> " + userName + "\n" + text.replaceAll("\\{name}", userName);
     }
 }

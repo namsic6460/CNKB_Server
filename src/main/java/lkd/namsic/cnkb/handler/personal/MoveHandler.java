@@ -5,14 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lkd.namsic.cnkb.domain.map.GameMap;
-import lkd.namsic.cnkb.domain.map.PassedMap;
 import lkd.namsic.cnkb.domain.map.repository.GameMapRepository;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.domain.user.repository.UserRepository;
 import lkd.namsic.cnkb.dto.Location;
-import lkd.namsic.cnkb.enums.ItemType;
-import lkd.namsic.cnkb.enums.MapType;
-import lkd.namsic.cnkb.exception.DataNotFoundException;
+import lkd.namsic.cnkb.enums.domain.ItemType;
+import lkd.namsic.cnkb.enums.domain.MapType;
 import lkd.namsic.cnkb.exception.UserReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.InventoryService;
@@ -69,14 +67,10 @@ public class MoveHandler extends AbstractHandler {
             }
         }
 
-        try {
-            MapType mapType = MapType.find(mapName);
-            GameMap targetGameMap = this.gameMapRepository.findByMapType(mapType);
+        MapType mapType = MapType.find(mapName);
+        GameMap targetGameMap = this.gameMapRepository.findByMapType(mapType);
 
-            return this.moveToMap(user, gameMap, targetGameMap);
-        } catch (DataNotFoundException e) {
-            throw new UserReplyException("이동이 불가능한 맵입니다");
-        }
+        return this.moveToMap(user, gameMap, targetGameMap);
     }
 
     public HandleResult moveToMap(User user, GameMap currentGameMap, GameMap targetGameMap) {
@@ -100,10 +94,7 @@ public class MoveHandler extends AbstractHandler {
         }
 
         String innerMessage = null;
-        boolean shouldCheckLimits = targetGameMap.getPassedMaps().stream()
-            .noneMatch(passedMap -> passedMap.getKey().getUser() == user);
-
-        if (!targetGameMap.getPassedMaps().isEmpty() && shouldCheckLimits) {
+        if (!targetGameMap.getMapLimitItems().isEmpty() && !targetGameMap.getPassedUsers().contains(user)) {
             Map<ItemType, Integer> resultItemCountMap = new HashMap<>();
             targetGameMap.getMapLimitItems().stream()
                 .filter(limitItem -> {
@@ -139,7 +130,7 @@ public class MoveHandler extends AbstractHandler {
                     .append("개)\n\n");
             });
 
-            targetGameMap.getPassedMaps().add(PassedMap.create(targetGameMap, user));
+            targetGameMap.getPassedUsers().add(user);
             innerMessage = builder.toString().trim();
         }
 

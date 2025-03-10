@@ -14,7 +14,7 @@ import lkd.namsic.cnkb.domain.item.repository.InventoryRepositoryCustom;
 import lkd.namsic.cnkb.domain.item.repository.ItemRepository;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.InventoryType;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;

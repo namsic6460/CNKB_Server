@@ -9,7 +9,7 @@ import java.util.Set;
 import lkd.namsic.cnkb.common.Emoji;
 import lkd.namsic.cnkb.constant.MineConstants;
 import lkd.namsic.cnkb.domain.user.User;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lkd.namsic.cnkb.exception.UserReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.InventoryService;

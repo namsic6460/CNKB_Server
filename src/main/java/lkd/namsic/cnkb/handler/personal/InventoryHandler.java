@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lkd.namsic.cnkb.domain.item.dto.InventoryItemDto;
 import lkd.namsic.cnkb.domain.user.User;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lkd.namsic.cnkb.exception.UserReplyException;
 import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.InventoryService;

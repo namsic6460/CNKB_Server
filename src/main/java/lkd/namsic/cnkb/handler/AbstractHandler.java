@@ -4,7 +4,7 @@ import jakarta.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import lkd.namsic.cnkb.domain.user.User;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lkd.namsic.cnkb.exception.SkipException;
 import lkd.namsic.cnkb.exception.UserReplyException;
 

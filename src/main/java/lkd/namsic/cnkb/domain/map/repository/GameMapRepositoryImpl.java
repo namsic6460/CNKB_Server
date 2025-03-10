@@ -1,14 +1,13 @@
 package lkd.namsic.cnkb.domain.map.repository;
 
+import static lkd.namsic.cnkb.domain.map.QGameMap.gameMap;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Optional;
 import lkd.namsic.cnkb.domain.map.GameMap;
 import lkd.namsic.cnkb.dto.Location;
-import lkd.namsic.cnkb.enums.MapType;
+import lkd.namsic.cnkb.enums.domain.MapType;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
-
-import static lkd.namsic.cnkb.domain.map.QGameMap.gameMap;
 
 @RequiredArgsConstructor
 public class GameMapRepositoryImpl implements GameMapRepositoryCustom {

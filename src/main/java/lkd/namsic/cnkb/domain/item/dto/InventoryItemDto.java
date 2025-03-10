@@ -1,9 +1,8 @@
 package lkd.namsic.cnkb.domain.item.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import lkd.namsic.cnkb.enums.ItemType;
-
 import java.util.List;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 
 public record InventoryItemDto(
     ItemType itemType,

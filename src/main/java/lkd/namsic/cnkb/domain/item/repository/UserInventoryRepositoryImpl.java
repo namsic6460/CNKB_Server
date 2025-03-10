@@ -1,6 +1,10 @@
 package lkd.namsic.cnkb.domain.item.repository;
 
+import static lkd.namsic.cnkb.domain.item.QUserInventory.userInventory;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
+import java.util.Optional;
 import lkd.namsic.cnkb.constant.Constants;
 import lkd.namsic.cnkb.domain.item.QItem;
 import lkd.namsic.cnkb.domain.item.UserInventory;
@@ -8,13 +12,8 @@ import lkd.namsic.cnkb.domain.item.dto.InventoryItemDto;
 import lkd.namsic.cnkb.domain.item.dto.QInventoryItemDto;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.InventoryType;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-import java.util.Optional;
-
-import static lkd.namsic.cnkb.domain.item.QUserInventory.userInventory;
 
 @RequiredArgsConstructor
 public class UserInventoryRepositoryImpl implements InventoryRepositoryCustom<User> {

@@ -2,7 +2,7 @@ package lkd.namsic.cnkb.constant;
 
 import java.util.List;
 import java.util.Map;
-import lkd.namsic.cnkb.enums.ItemType;
+import lkd.namsic.cnkb.enums.domain.ItemType;
 
 public class MineConstants {
 
