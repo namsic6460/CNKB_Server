@@ -10,10 +10,27 @@ import lombok.Getter;
 @Getter
 public enum MinerStat {
 
-    // TODO: @namsic
-    SPEED(List.of("속도", "speed"), 10, lv -> (long) Math.floor(Math.log10(lv) * 100)),
-    QUALITY(List.of("등급", "quality"), 15, lv -> (long) Math.pow(lv, 2) * 100),
-    STORAGE(List.of("저장량", "storage"), 20, lv -> lv * 2L),
+    SPEED(List.of("속도", "speed"), 5, lv -> switch (lv) {
+        case 1 -> 3_000L;
+        case 2 -> 50_000L;
+        case 3 -> 800_000L;
+        case 4 -> 25_000_000L;
+        default -> throw new IllegalArgumentException();
+    }),
+    QUALITY(List.of("등급", "quality"), 5, lv -> switch (lv) {
+        case 1 -> 2_000L;
+        case 2 -> 30_000L;
+        case 3 -> 750_000L;
+        case 4 -> 50_000_000L;
+        default -> throw new IllegalArgumentException();
+    }),
+    STORAGE(List.of("저장량", "storage"), 5, lv -> switch (lv) {
+        case 1 -> 1000L;
+        case 2 -> 10000L;
+        case 3 -> 300_000L;
+        case 4 -> 15_000_000L;
+        default -> throw new IllegalArgumentException();
+    }),
     ;
 
     private static final HashMap<String, MinerStat> minerStatMap = new HashMap<>();
@@ -44,18 +61,11 @@ public enum MinerStat {
     }
 
     public static int getMinerStatValue(Miner miner, MinerStat minerStat) {
-        switch (minerStat) {
-            case SPEED -> {
-                return miner.getSpeedLv();
-            }
-            case QUALITY -> {
-                return miner.getQualityLv();
-            }
-            case STORAGE -> {
-                return miner.getStorageLv();
-            }
-            default -> throw DataNotFoundException.minerStat();
-        }
+        return switch (minerStat) {
+            case SPEED -> miner.getSpeedLv();
+            case QUALITY -> miner.getQualityLv();
+            case STORAGE -> miner.getStorageLv();
+        };
     }
 
     public boolean isMaxLv(int currentLv) {

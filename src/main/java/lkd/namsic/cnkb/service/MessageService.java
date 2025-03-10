@@ -1,6 +1,11 @@
 package lkd.namsic.cnkb.service;
 
 import jakarta.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lkd.namsic.cnkb.component.ActionHelper;
 import lkd.namsic.cnkb.constant.Constants;
 import lkd.namsic.cnkb.domain.npc.Chat;
@@ -20,11 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -85,18 +85,20 @@ public class MessageService {
         }
 
         try {
-            List<String> commands = List.of(message.substring(2).split(" "));
-            AbstractHandler handler = this.handlerMap.get(commands.get(0));
+            List<String> commands = Arrays.stream(message.substring(2).split(" "))
+                .map(String::toLowerCase)
+                .toList();
 
+            AbstractHandler handler = this.handlerMap.get(commands.getFirst());
             if (handler == null) {
-                log.warn("Unknown root command {}", commands.get(0));
+                log.warn("Unknown root command {}", commands.getFirst());
                 return;
             }
 
             AbstractHandler.UserData userData = new AbstractHandler.UserData(userId, user, sender, room);
             handler.verify(commands, userData);
-            AbstractHandler.HandleResult handleResult = handler.handle(commands, userData);
 
+            AbstractHandler.HandleResult handleResult = handler.handle(commands, userData);
             if (handleResult == null) {
                 return;
             }

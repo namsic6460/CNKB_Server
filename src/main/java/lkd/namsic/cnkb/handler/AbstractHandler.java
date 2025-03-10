@@ -12,6 +12,10 @@ public abstract class AbstractHandler {
 
     public abstract List<String> getRootCommands();
     public abstract void verify(List<String> commands, UserData userData);
+
+    /**
+     * @param commands Lowercase commands.<br>Excludes prefix("n arg1 arg2" -> [arg1, arg2])
+     */
     @Nullable public abstract HandleResult handle(List<String> commands, UserData userData);
 
     protected void checkUser(UserData userData) {
@@ -21,7 +25,7 @@ public abstract class AbstractHandler {
         }
     }
 
-    protected void checkLength(List<String> commands, int minLength) {
+    protected void checkMinLength(List<String> commands, int minLength) {
         if (commands.size() < minLength) {
             throw new UserReplyException("정확하지 않은 명령어입니다\n도움말 확인 후 다시 입력해주세요");
         }

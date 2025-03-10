@@ -4,6 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lkd.namsic.cnkb.dto.KakaoExtra;
 import lkd.namsic.cnkb.dto.KakaoMessage;
 import lkd.namsic.cnkb.dto.KakaoUserInfo;
@@ -13,11 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.io.*;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @Component
@@ -125,7 +128,7 @@ public class AdbClient {
         }
     }
 
-    @Scheduled(initialDelay = 1000, fixedRate = 1000)
+    @Scheduled(initialDelay = 1000, fixedRate = 250)
     public void readDb() {
         if (this.usingWriter.get() || this.usingReader.get()) {
             return;

@@ -71,7 +71,7 @@ public class MinerHandler extends AbstractHandler {
             throw new UserReplyException("획득한 광석이 없습니다");
         }
 
-        ItemType itemType = MineConstants.MINER_ITEMS.get(miner.getQualityLv() - 1);
+        ItemType itemType = MineConstants.MINER_ORE_ITEMS.get(miner.getQualityLv() - 1);
         this.minerRepository.updateCheckedAt(miner, miner.getCheckedAt().plusSeconds(gatheredCount * gatherDelay));
 
         gatheredCount = Math.min(gatheredCount, MineConstants.MINER_MAX_STORAGE_COUNT.get(miner.getStorageLv() - 1));
@@ -86,7 +86,6 @@ public class MinerHandler extends AbstractHandler {
 
     private HandleResult upgradeMinerStat(User user, Miner miner, String minerStatName) {
         MinerStat minerStat = MinerStat.find(minerStatName);
-
         int currentLv = MinerStat.getMinerStatValue(miner, minerStat);
 
         long money = user.getMoney();

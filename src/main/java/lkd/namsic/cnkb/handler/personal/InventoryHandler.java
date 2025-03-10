@@ -1,5 +1,11 @@
 package lkd.namsic.cnkb.handler.personal;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lkd.namsic.cnkb.domain.item.dto.InventoryItemDto;
 import lkd.namsic.cnkb.domain.user.User;
 import lkd.namsic.cnkb.enums.ItemType;
@@ -8,13 +14,6 @@ import lkd.namsic.cnkb.handler.AbstractHandler;
 import lkd.namsic.cnkb.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -30,6 +29,7 @@ public class InventoryHandler extends AbstractHandler {
     @Override
     public void verify(List<String> commands, UserData userData) {
         this.checkUser(userData);
+        this.checkMaxLength(commands, 2);
 
         if (commands.size() > 1) {
             try {

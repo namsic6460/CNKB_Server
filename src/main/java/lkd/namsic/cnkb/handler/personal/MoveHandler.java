@@ -38,6 +38,7 @@ public class MoveHandler extends AbstractHandler {
     @Override
     public void verify(List<String> commands, UserData userData) {
         this.checkUser(userData);
+        this.checkMinLength(commands, 2);
     }
 
     @Nullable

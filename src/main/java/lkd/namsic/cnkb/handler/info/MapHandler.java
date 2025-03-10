@@ -58,7 +58,7 @@ public class MapHandler extends AbstractHandler {
             }
         }
 
-        StringBuilder builder = new StringBuilder("[이동 가능한 맵 목록]");
+        StringBuilder builder = new StringBuilder("===이동 가능한 맵 목록===");
         availableMaps.forEach(availableMap -> {
             Location mapLocation = availableMap.getLocation();
 
